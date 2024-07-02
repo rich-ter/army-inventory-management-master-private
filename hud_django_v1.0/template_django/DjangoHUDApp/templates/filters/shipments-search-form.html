@@ -1,0 +1,62 @@
+{% load widget_tweaks %}
+
+<form method="get" class="form-inline mb-3 d-flex justify-content-center align-items-center">
+    <div class="row align-items-center mb-3 w-100">
+        <!-- Search Input -->
+        <div class="col-md-2 mb-2">
+            <div class="input-group">
+                <input type="text" name="order_number" class="form-control ps-35px" placeholder="Αριθμός Αποστολής" value="{{ request.GET.order_number }}">
+            </div>
+        </div>
+        <!-- Shipment Type Dropdown -->
+        <div class="col-md-2 mb-2">
+            <div class="dropdown">
+                <button class="btn btn-outline-default dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Τύπος Διακίνησης</button>
+                <div class="dropdown-menu">
+                    {% for choice in filter.form.shipment_type.field.choices %}
+                        <a class="dropdown-item" href="?shipment_type={{ choice.0 }}{% if request.GET.recipient %}&recipient={{ request.GET.recipient }}{% endif %}{% if request.GET.start_date %}&start_date={{ request.GET.start_date }}{% endif %}{% if request.GET.end_date %}&end_date={{ request.GET.end_date }}{% endif %}">{{ choice.1 }}</a>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="shipment_type" id="shipment_type-input" value="{{ request.GET.shipment_type }}">
+            </div>
+        </div>
+        <!-- Recipient Dropdown -->
+        <div class="col-md-2 mb-2">
+            <div class="dropdown">
+                <button class="btn btn-outline-default dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Παραλήπτης</button>
+                <div class="dropdown-menu w-100">
+                   {% for choice in filter.form.recipient.field.choices %}
+                        <a class="dropdown-item" href="?recipient={{ choice.0 }}{% if request.GET.shipment_type %}&shipment_type={{ request.GET.shipment_type }}{% endif %}{% if request.GET.start_date %}&start_date={{ request.GET.start_date }}{% endif %}{% if request.GET.end_date %}&end_date={{ request.GET.end_date }}{% endif %}">{{ choice.1 }}</a>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="recipient" id="recipient-input" value="{{ request.GET.recipient }}">
+            </div>
+        </div>
+        <!-- Start Date -->
+        <div class="col-md-2 mb-2">
+            <div class="input-group">
+                <input type="date" name="start_date" class="form-control" placeholder="Από"
+                       value="{{ request.GET.start_date }}">
+            </div>
+        </div>
+        <!-- End Date -->
+        <div class="col-md-2 mb-2">
+            <div class="input-group">
+                <input type="date" name="end_date" class="form-control" placeholder="Έως"
+                       value="{{ request.GET.end_date }}">
+            </div>
+        </div>
+        <!-- Submit Button -->
+        <div class="col-md-1 mb-2">
+            <button type="submit" class="btn btn-theme w-100"><i class="fa fa-search"></i></button>
+        </div>
+        <!-- Clear Filters Button -->
+        <div class="col-md-1 mb-2">
+            <a href="{% url 'DjangoHUDApp:pageOrder' %}" class="btn btn-outline-secondary w-100">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+    </div>
+</form>

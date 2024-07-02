@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  django:
+    build:
+      context: .
+    container_name: django_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./template_django:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=DjangoHUD.settings
+    command: ["gunicorn", "DjangoHUD.wsgi:application", "--bind", "0.0.0.0:8000"]

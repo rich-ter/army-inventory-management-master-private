@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load filters_tags %}
+
+{% block title %}Διακινίσεις{% endblock %}
+
+{% block content %}
+    <div class="d-flex align-items-center mb-3">
+        <div>
+            <h1 class="page-header mb-0">Διακινίσεις</h1>
+        </div>
+        <div class="ms-auto">
+            <a href="add-shipment" class="btn btn-outline-theme"><i class="fa fa-plus-circle fa-fw me-1"></i> Δημιουργία Διακίνησης</a>
+        </div>
+    </div>
+    {% render_shipment_filter_form filter %}
+
+    <div class="card">
+        <div class="tab-content p-4">
+            <div class="tab-pane fade show active" id="allTab">
+                <div class="table-responsive">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="border-top-0 pt-0 pb-2"></th>
+                                <th class="border-top-0 pt-0 pb-2">Αρ.</th>
+                                <th class="border-top-0 pt-0 pb-2">Ημερομηνία</th>
+                                <th class="border-top-0 pt-0 pb-2">Παραλήπτης</th>
+                                <th class="border-top-0 pt-0 pb-2">Τύπος Αποστολής</th>
+                                <th class="border-top-0 pt-0 pb-2">Προιόντα</th>
+                                <th class="border-top-0 pt-0 pb-2">Δημιουργός</th>
+                                <th class="border-top-0 pt-0 pb-2">Σχόλια</th>
+                                <th class="border-top-0 pt-0 pb-2">Διαγραφή</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for shipment in shipments %}
+                            <tr>
+                                <td class="w-10px align-middle">
+                                    <a href="{% url 'DjangoHUDApp:order_print' shipment_id=shipment.id %}" class="btn" target="_blank">
+                                        <i class="bi bi-printer"></i>
+                                    </a>
+                                </td>
+                                <td class="align-middle">
+                                    <a href="{% url 'DjangoHUDApp:pageOrderDetails' shipment.id %}">
+                                        #{{ shipment.id }}
+                                    </a>
+                                </td>
+                                <td class="align-middle">{{shipment.date}}</td>
+                                <td>{{ shipment.recipient|default:"-" }}</td>
+                                <td class="py-1 align-middle">
+                                {% if shipment.shipment_type == 'IN' %}
+                                    <span class="badge border border-success text-success px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i class="fa fa-circle fs-9px fa-fw me-5px"></i> IN</span>
+                                {% elif shipment.shipment_type == 'OUT' %}
+                                    <span class="badge border border-warning text-warning px-2 pt-5px pb-5px rounded fs-12px d-inline-flex align-items-center"><i class="fa fa-circle fs-9px fa-fw me-5px"></i> OUT</span>
+                                {% endif %}
+                                    </td>
+                                <td class="align-middle">
+                                    <ul class="list-unstyled mb-0" style="font-size: smaller;">
+                                        {% for item in shipment.shipment_items.all %}
+                                            <li>{{ item.product.name }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>                            
+                                <td class="align-middle">{{ shipment.user.username }}</td>
+                                <td class="align-middle">{{shipment.notes}}</td>
+                                <td class="align-middle">
+                                    <form method="post" action="{% url 'DjangoHUDApp:delete_shipment' shipment.id %}" style="display:inline;" onsubmit="return confirmDelete();">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="d-md-flex align-items-center">
+                    <div class="me-md-auto text-md-left text-center mb-2 mb-md-0">
+                        Showing {{ shipments.start_index }} to {{ shipments.end_index }} of {{ shipments.paginator.count }} entries
+                    </div>
+                    <ul class="pagination mb-0 justify-content-center">
+                        {% if shipments.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ shipments.previous_page_number }}">Previous</a></li>
+                        {% else %}
+                        <li class="page-item disabled"><a class="page-link">First</a></li>
+                        <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                        {% endif %}
+                        {% for num in shipments.paginator.page_range %}
+                        {% if shipments.number == num %}
+                        <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% elif num > shipments.number|add:'-3' and num < shipments.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if shipments.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ shipments.next_page_number }}">Next</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ shipments.paginator.num_pages }}">Last</a></li>
+                        {% else %}
+                        <li class="page-item disabled"><a class="page-link">Next</a></li>
+                        <li class="page-item disabled"><a class="page-link">Last</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-arrow">
+            <div class="card-arrow-top-left"></div>
+            <div the="card-arrow-top-right"></div>
+            <div the="card-arrow-bottom-left"></div>
+            <div the="card-arrow-bottom-right"></div>
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete() {
+            return confirm("ΠΡΟΣΟΧΗ! Αυτή η ενέργεια θα διαγράψει την αποστολή και θα αλλάξουν οι ποσότητες των αποθηκών");
+        }
+    </script>
+{% endblock %}

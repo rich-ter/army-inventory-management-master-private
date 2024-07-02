@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Order Details{% endblock %}
+
+{% block content %}
+	<div class="d-flex align-items-center mb-3">
+		<div>
+			<h1 class="page-header mb-0"> Πληροφορίες / Επεξεργασία Διακίνησης</h1>
+		</div>
+	</div>
+	
+	<div class="row gx-4">
+		<div class="col-lg-8">
+
+			<div class="card mb-4">
+				<div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
+        		Προιόντα ({{ shipment_items.count }})
+				</div>
+				<div class="card-body text-inverse">
+					{% for item in shipment_items %}
+					<div class="row align-items-center">
+						<div class="col-lg-8 d-flex align-items-center">
+							<div class="h-65px w-65px d-flex align-items-center justify-content-center position-relative bg-white p-1">
+							{% if item.product.image %}
+								<!-- Use the `url` attribute of the ImageField to get the image URL -->
+								<img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="mw-100 mh-100">
+							{% else %}
+								<!-- Fallback image if the product does not have an image -->
+								<img src="{% static 'img/product/default-product.jpg' %}" alt="Default Product Image" class="mw-100 mh-100">
+							{% endif %}								
+							<span class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">{{item.quantity}}</span>
+							</div>
+							<div class="ps-3 flex-1">
+								<div><a href="#" class="text-decoration-none text-inverse">{{ item.product.name }}</a></div>
+								<div class="text-inverse text-opacity-50 small">
+									Αρ. Μερίδας: {{item.product.batch_number}}
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 m-0 ps-lg-3">
+							Αποθήκη: {{item.warehouse}}
+						</div>
+					</div>
+					<hr class="my-4">
+					{% endfor %}
+				</div>
+					<div class="card-footer bg-none d-flex p-3">
+					<a href="{% url 'DjangoHUDApp:order_print' shipment_id=shipment.id %}" class="btn btn-outline-theme ms-2" target="_blank">Εκτύπωση</a>
+			</div>
+				<div class="card-arrow">
+					<div class="card-arrow-top-left"></div>
+					<div class="card-arrow-top-right"></div>
+					<div class="card-arrow-bottom-left"></div>
+					<div class="card-arrow-bottom-right"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-4">
+			<div class="card mb-4">
+				<div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
+					Πληροφορίες Διακίνησης
+				</div>
+				<div class="card-body">
+					<table class="table table-borderless table-sm m-0">
+						<tbody>
+							<tr>
+								<td class="w-150px">Ημερομηνία</td>
+								<td class="text-end pb-2 text-decoration-underline">{{ shipment.date|date:"d/m/Y H:i" }}</td>
+							</tr>
+								<td colspan="3">
+								<hr class="m-0">
+								</td>
+							</tr>
+							<tr>
+								<td class="pb-2" colspan="2"><b>Tύπος Διακίνηση</b></td>
+								<td> <u class="text-end pb-2 text-success fw-bold small">{{shipment.shipment_type}}</u> <small></small></td>
+							</tr>
+							</tr>
+								<td colspan="3">
+								<hr class="m-0">
+							</td>
+							</tr>
+							<tr>
+								<td class="pb-2" colspan="2"><b>Δημιουργός</b></td>
+								<td class="text-end pb-2"> <a class="text-decoration-none">{{shipment.user}}</a></td>								
+							</td>
+							</tr>
+								<td colspan="3">
+								<hr class="m-0">
+							<tr>
+								<td class="pb-2" colspan="2"><b>Παραλήπτης</b></td>
+								<td class="text-end pb-2"> <a href="#" class="text-decoration-none">{{shipment.recipient}}</a></td>								
+							</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<hr class="m-0">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="card-arrow">
+					<div class="card-arrow-top-left"></div>
+					<div class="card-arrow-top-right"></div>
+					<div class="card-arrow-bottom-left"></div>
+					<div class="card-arrow-bottom-right"></div>
+				</div>
+			</div>
+			<div class="card mb-4">
+				<div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
+					Συννημένα
+				</div>
+				<div class="card-body fw-bold">
+					<div class="d-flex align-items-center">
+						{% comment %} <a href="#" class="d-block"><img src="{% static 'img/user/user-1.jpg' %}" alt="" width="45" class="rounded-pill"></a> {% endcomment %}
+						<div class="flex-1 ps-3">
+							<a href="#" class="d-block text-decoration-none">{{shipment.attachment}}</a>
+						</div>
+					</div>
+				</div>
+				<div class="card-arrow">
+					<div class="card-arrow-top-left"></div>
+					<div class="card-arrow-top-right"></div>
+					<div class="card-arrow-bottom-left"></div>
+					<div class="card-arrow-bottom-right"></div>
+				</div>
+			</div>
+			<div class="card mb-4">
+				<div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
+					Σχόλια Διακίνησης
+				</div>
+				<div class="card-body fw-bold">
+				{{shipment.notes}}
+				</div>
+				<div class="card-arrow">
+					<div class="card-arrow-top-left"></div>
+					<div class="card-arrow-top-right"></div>
+					<div class="card-arrow-bottom-left"></div>
+					<div class="card-arrow-bottom-right"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

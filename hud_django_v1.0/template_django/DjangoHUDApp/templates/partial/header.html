@@ -1,0 +1,19 @@
+<div id="header" class="app-header">
+  {% if appSidebarHide is None %}
+  {% endif %} {% if appTopNav is not None and appSidebarHide %} {% endif %}
+  <div class="brand">
+    <a href="/dashboard" class="brand-logo">
+      <span class="brand-img">
+        <span class="brand-img-text text-theme"></span>
+      </span>
+      <span class="brand-text"> ΣΔΑ 'ΡΙΧΤΕΡ'</span>
+    </a>
+  </div>
+  <div class="menu">
+    <div class="menu-item dropdown dropdown-mobile-full">
+        <div class="menu-text d-sm-block d-none w-170px">
+          {{ user.username }}
+        </div>
+    </div>
+  </div>
+</div>

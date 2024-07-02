@@ -1,0 +1,127 @@
+<!-- page-data-management.html -->
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Αποθέματα{% endblock %}
+
+{% block css %}
+    <link href="{% static 'plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'plugins/datatables.net-fixedcolumns-bs5/css/fixedColumns.bootstrap5.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'plugins/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'plugins/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'plugins/jszip/dist/jszip.min.js' %}"></script>
+    <script src="{% static 'plugins/pdfmake/build/pdfmake.min.js' %}"></script>
+    <script src="{% static 'plugins/pdfmake/build/vfs_fonts.js' %}"></script>
+    <script src="{% static 'plugins/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables.net-fixedcolumns/js/dataTables.fixedColumns.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables.net-fixedcolumns-bs5/js/fixedColumns.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'js/demo/page-data-management.demo.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex align-items-center mb-3">
+        <div>
+            <h1 class="page-header mb-0">Διαχείριση Αποθέματος</h1>
+        </div>
+        <div class="ms-auto">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="file" class="form-control mb-2" accept=".csv, .xlsx">
+                <button type="submit" class="btn btn-outline-theme"><i class="fa fa-upload fa-fw me-1"></i> Ανέβασμα Αρχείου</button>
+            </form>
+        </div>
+    </div>
+    <div class="data-management d-none" data-id="table">
+        <table class="table table-bordered table-xs w-100 fw-semibold text-nowrap mb-3" id="datatable">
+            <thead>
+                <tr>
+                    <th>Μερίδα</th>
+                    <th>Κατηγορία</th>
+                    <th>Προιόν</th>
+                    <th>Χρήση</th>
+                    <th>Συνολικό Απόθεμα</th>
+                    {% if can_view_tagma %}<th>Απ. ΤΑΓΜΑ</th>{% endif %}
+                    {% if can_view_kepik %}<th>Απ. ΚΕΠΙΚ</th>{% endif %}
+                    {% if can_view_doriforika %}<th>Απ. ΔΟΡΥΦΟΡΙΚΑ</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody class="text-body">
+                {% for product in products_with_stock %}
+                <tr>
+                    <td>{{ product.batch_number }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.usage }}</td>
+                    <td>
+                        {% if product.total_stock == 0 or product.total_stock is None %}
+                            0 <a href="#" class="text-warning" data-bs-toggle="tooltip" data-bs-title="Out of Stock"><i class="bi-exclamation-circle-fill"></i></a>
+                        {% else %}
+                            {{ product.total_stock }}
+                        {% endif %}
+                    </td>                    
+                    {% if can_view_tagma %}<td>{{ product.stock_tagma }}</td>{% endif %}
+                    {% if can_view_kepik %}<td>{{ product.stock_kepik }}</td>{% endif %}
+                    {% if can_view_doriforika %}<td>{{ product.stock_doriforika }}</td>{% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+					{% comment %} to fix the below to work, either here or on the template page {% endcomment %}
+                    {% if can_view_tagma %}
+                        <th>
+                            {% with total_tagma=0 %}
+                                {% for product in products_with_stock %}
+                                    {% with total_tagma=total_tagma|add:product.stock_tagma %}
+                                    {% endwith %}
+                                {% endfor %}
+                                {{ total_tagma }}
+                            {% endwith %}
+                        </th>
+                    {% endif %}
+                    {% if can_view_kepik %}
+                        <th>
+                            {% with total_kepik=0 %}
+                                {% for product in products_with_stock %}
+                                    {% with total_kepik=total_kepik|add:product.stock_kepik %}
+                                    {% endwith %}
+                                {% endfor %}
+                                {{ total_kepik }}
+                            {% endwith %}
+                        </th>
+                    {% endif %}
+                    {% if can_view_doriforika %}
+                        <th>
+                            {% with total_doriforika=0 %}
+                                {% for product in products_with_stock %}
+                                    {% with total_doriforika=total_doriforika|add:product.stock_doriforika %}
+                                    {% endwith %}
+                                {% endfor %}
+                                {{ total_doriforika }}
+                            {% endwith %}
+                        </th>
+                    {% endif %}
+                    </tr>
+            </tfoot>
+        </table>
+    </div>
+{% endblock %}

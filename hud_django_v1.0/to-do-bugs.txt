@@ -1,0 +1,76 @@
+------ THINGS LEFT TO FINISH ------ 
+
+1. Make sure that the stock-per-warehouse filters are working properly. 
+2. MAKE SURE ABOUT CRUD OPERATIONS ABOUT SHIPMENTS AND PRODUCTS
+3. Make sure that in dashboards users can only see what their target group created.
+
+-- create a custom richterlabs admin dashboard on docker to deloy all the time? 
+7. If time, then add a page for the recipients to have a list to show all recent shipemnts to that recipient.
+
+
+
+------ DONE ------ 
+
+
+8. DEFAULT OPTION TO BE ΚΑΜΙΑ ΕΠΙΛΟΓΗ when creating a product.
+
+4. Finalise Dashboards
+3. MAKE SURE BACK-END LOGIC WORKS FOR CORRECTLY ADDING AND REMOVING ITEMS FROM THE WAREHOUSES.
+
+14. Add csv file as importing into the database with management command.
+- when deleting a shipment make sure the attachemnts are also deleted in the database. 
+8. Ensure that if user creates something, other's can't view it. all his created things appear in 
+5. Create the django admin to have the 3 different users above and to be able to add products only for their warehouse.
+9. Need to make sure that the user can only send products that belong to his user group.
+admin to be able to view all products when creating shipments.
+- remove the fulfiled tropos apostolis as it doesn't exist.
+1. To be able to upload images for each of the products - DONE
+2. Create 3 user types (DIDES, DORIFORIKA, ADMIN)
+    2.1 Do not allow the dides user to view doriforika products
+    2.2 Do not allow the doriforika user to view the dides products
+    2.3 Admin user can view everything from all users.
+3. HTML page to print a shipment form. The shipment form will be identical for the 2 squadrons but change the 1 loxos to 2nd loxos etc.
+4. ON THE PRODUCT LIST localhost:8000/product ADD A 'SEARCH ICON' LIKE IN THE APOTHEMA THAT WILL DISPLAY THE PRODUCT IMAGE. - SOLVED
+10. Export to csv the apothemata database. - SOLVED
+11. Doriforika and dides might have similar products make sure that if the usage is common that both can see it. - SOLVED
+19. feature to import csv into the database with the exported apothemata. to recount the stock.
+17. Have the incoming to also have a recipient which can be eborio, OTe etc. remove the conditional logic from having the shipment only outgoing showing the recipient.
+24. When creating shipments ensure only the available warehouses are shown in the dropdown as to where the product is going or leaving from. 
+25. ensure that when a user adds a product, the product is automatically assigned to the creator's user group. 
+15. create management command for creating the products in the right order, specifying the warehouses etc. 
+21. ensure CSV importer has no issues, make it visible only to the admin for that functionality, hide the button otherwise.
+20. To ensure order of deleting and CASCADE.models delete is working as expected and logical for deleted orders and not breaking the app. 
+22. deployment
+2. Issue with creating δορυφορικά products that also go to a adifferent warehouse. 
+1. WHEN 'CREATING ORDER' EVEN IF THE STOCK IS LOWER AND IT DOESNT LET THE OBJECT IS ACTUALLY CREATED EVEN THO THE ERROR IS SHOWING.
+11. usage also - DONE
+10. to add a new model so they can edit the product category
+14. change the recipient list from sorted by small to high number ascending - DONE
+6. fix routing and route names. 
+13. ensure the greek is implemented in the date 
+16 being able to delete products
+- MAKE image uploading limited to png and jpg and max size. 
+- same for shipment attachments
+Customize admin dashboard to be able to search product names.
+12. order shipment paper to split into 1os loxos and 2os. have 2 different ones based on the user creating the order.
+
+------ BUGS ------ 
+
+3. On the deployed server when we create a shipment we can't press the submit button to fulfil.
+4. Admin doesn't view any products
+
+----
+-
+
+for reimporting 
+
+create recipients
+then create products
+then import the file
+
+
+generally
+
+
+create recipients
+create products

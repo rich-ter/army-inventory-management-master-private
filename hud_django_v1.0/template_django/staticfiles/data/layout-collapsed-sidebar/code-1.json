@@ -1,0 +1,5 @@
+def layoutCollapsedSidebar(request):
+  context = {
+    "appSidebarCollapsed": 1
+  }
+  return render(request, "pages/layout-collapsed-sidebar.html", context)

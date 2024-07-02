@@ -1,0 +1,20 @@
+&lt;a href="#" class="card text-decoration-none"&gt;
+  &lt;div class="card-body d-flex align-items-center text-inverse m-5px bg-inverse bg-opacity-10"&gt;
+    &lt;div class="flex-fill"&gt;
+      &lt;div class="mb-1"&gt;Total Visitors + Page Views&lt;/div&gt;
+      &lt;h2&gt;22,930&lt;/h2&gt;
+      &lt;div&gt;Today, 11:25AM&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="opacity-5"&gt;
+      &lt;i class="fa fa-shopping-bag fa-4x"&gt;&lt;/i&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;!-- card-arrow --&gt;
+  &lt;div class="card-arrow"&gt;
+    &lt;div class="card-arrow-top-left"&gt;&lt;/div&gt;
+    &lt;div class="card-arrow-top-right"&gt;&lt;/div&gt;
+    &lt;div class="card-arrow-bottom-left"&gt;&lt;/div&gt;
+    &lt;div class="card-arrow-bottom-right"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/a&gt;

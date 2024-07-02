@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark" class="bg-cover-3" {% block htmlAttr %}{% endblock %}>
+<head>
+	<meta charset="utf-8">
+	<title>ΣΔΑ | {% block title %}{% endblock %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<!-- ================== BEGIN core-css ================== -->
+	{% load static %}
+	<link href="{% static 'css/vendor.min.css' %}" rel="stylesheet">
+	<link href="{% static 'css/app.min.css' %}" rel="stylesheet">
+	<!-- ================== END core-css ================== -->
+	
+	{% block css %}{% endblock %}
+</head>
+<body class="{{ bodyClass }}{% if appHeaderHide is not None %} pace-top {% endif %}" {{ bodyAttr }}>
+	
+	<div id="app" class="app 
+		{% if appSidebarHide is not None %}app-without-sidebar{% endif %}
+		{% if appSidebarCollapsed %}app-sidebar-collapsed{% endif %}
+		{% if appHeaderHide is not None %}app-without-header{% endif %}
+		{% if appTopNav %}app-with-top-nav{% endif %}
+		{% if appContentFullHeight is not None %}app-content-full-height{% endif %}
+		{% if appFooter %}app-fixed-footer{% endif %}
+		{% if appBoxedLayout %}app-boxed-layout{% endif %}
+	">
+		{% if appHeaderHide is None %}
+			{% include 'partial/header.html' %}
+		{% endif %}
+		
+		{% if appSidebarHide is None %}
+			{% include 'partial/sidebar.html' %}
+		{% endif %}
+		
+		{% if appTopNav %}
+			{% include 'partial/top-nav.html' %}
+		{% endif %}
+		
+		<div class="app-content {{ appContentClass }}">
+			{% block content %}{% endblock %}
+		</div>
+		
+		{% comment %} {% include 'partial/theme-panel.html' %}  {% endcomment %}
+		
+		{% if appFooter %}
+			{% include 'partial/footer.html' %}
+		{% endif %}
+	</div>
+
+	{% include 'partial/scroll-top-btn.html' %} 
+	
+	{% block outter_content %}{% endblock %}
+
+	<!-- ================== BEGIN core-js ================== -->
+	<script src="{% static 'js/vendor.min.js' %}"></script>
+	<script src="{% static 'js/app.min.js' %}"></script>
+	<!-- ================== END core-js ================== -->
+	
+	{% block js %}{% endblock %}
+</body>
+</html>

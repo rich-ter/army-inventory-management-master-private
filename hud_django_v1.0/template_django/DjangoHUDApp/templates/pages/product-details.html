@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Product Details{% endblock %}
+
+{% block css %}
+    <link href="{% static 'plugins/summernote/dist/summernote-lite.css' %}" rel="stylesheet" />
+    <link href="{% static 'plugins/blueimp-file-upload/css/jquery.fileupload.css' %}" rel="stylesheet" />
+    <link href="{% static 'plugins/tag-it/css/jquery.tagit.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'plugins/summernote/dist/summernote-lite.min.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-file-upload/js/vendor/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-tmpl/js/tmpl.min.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-load-image/js/load-image.all.min.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-canvas-to-blob/js/canvas-to-blob.min.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-gallery/js/jquery.blueimp-gallery.min.js' %}"></script>
+    {% comment %} <script src="{% static 'plugins/blueimp-file-upload/js/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-file-upload/js/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-file-upload/js/jquery.fileupload-process.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-file-upload/js/jquery.fileupload-image.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-file-upload/js/jquery.fileupload-audio.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-file-upload/js/jquery.fileupload-video.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-file-upload/js/jquery.fileupload-validate.js' %}"></script>
+    <script src="{% static 'plugins/blueimp-file-upload/js/jquery.fileupload-ui.js' %}"></script> {% endcomment %}
+    <script src="{% static 'plugins/jquery-migrate/dist/jquery-migrate.min.js' %}"></script>
+    <script src="{% static 'plugins/tag-it/js/tag-it.min.js' %}"></script>
+    <script src="{% static 'js/demo/page-product-details.demo.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex align-items-center mb-3">
+        <div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:;">PAGES</a></li>
+                <li class="breadcrumb-item active">PRODUCT DETAILS</li>
+            </ol>
+            <h1 class="page-header mb-0">Επεξεργασία Προιόντος</h1>
+        </div>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row gx-4">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
+                        Πληροφορίες Προιόντος
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Τίτλος <span class="text-danger">*</span></label>
+                            {{ form.name }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Αριθμός Παρτίδας <span class="text-danger">*</span></label>
+                            {{ form.batch_number }}
+                        </div>
+                        <div class="">
+                            <label class="form-label">Περιγραφή <span class="text-danger">*</span></label>
+                            {{ form.description }}
+                        </div>
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center fw-400 bg-inverse bg-opacity-10">
+                        <div class="flex-1">
+                            <div>Στοιχεία Προιόντος</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Κατηγορία Προιόντος</label>
+                            {{ form.category }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Χρήση Προιόντος</label>
+                            {{ form.usage }}
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label">Μονάδα Μέτρησης</label>
+                            {{ form.unit_of_measurement }}
+                        </div>
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
+                        Φωτογραφία
+                    </div>
+                    <div class="card-body pb-2">
+                        {% if product.image %}
+                            <div class="mb-3">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                            </div>
+                        {% endif %}
+                        {{ form.image }}
+                        <div id="error-msg"></div>
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-theme btn-lg">Ανανέωση Προιόντος</button>
+    </form>
+{% endblock %}

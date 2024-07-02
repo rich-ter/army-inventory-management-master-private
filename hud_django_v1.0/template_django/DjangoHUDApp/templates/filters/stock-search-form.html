@@ -1,0 +1,49 @@
+{% load widget_tweaks %}
+
+<form method="get" class="form-inline mb-3 d-flex justify-content-center align-items-center">
+    <div class="row align-items-center mb-3 w-100">
+        <!-- Search Input -->
+        <div class="col-md-4 mb-2">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control ps-35px" placeholder="Αναζήτηση Προιόντος"
+                       value="{{ request.GET.search }}">
+            </div>
+        </div>
+        <!-- Category Dropdown -->
+        <div class="col-md-3 mb-2">
+            <div class="dropdown">
+                <button class="btn btn-outline-default dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Κατηγορία</button>
+                <div class="dropdown-menu w-100">
+                    {% for choice in filter.form.fields.product__category.queryset %}
+                        <a class="dropdown-item" href="?search={{ request.GET.search }}&category={{ choice.id }}&usage={{ request.GET.usage }}">{{ choice.name }}</a>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="category" id="category-input" value="{{ request.GET.category }}">
+            </div>
+        </div>
+        <!-- Usage Dropdown -->
+        <div class="col-md-3 mb-2">
+            <div class="dropdown">
+                <button class="btn btn-outline-default dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Χρήση</button>
+                <div class="dropdown-menu w-100">
+                    {% for choice in filter.form.fields.product__usage.queryset %}
+                        <a class="dropdown-item" href="?search={{ request.GET.search }}&category={{ request.GET.category }}&usage={{ choice.id }}">{{ choice.name }}</a>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="usage" id="usage-input" value="{{ request.GET.usage }}">
+            </div>
+        </div>
+        <!-- Submit Button -->
+        <div class="col-md-1 mb-2">
+            <button type="submit" class="btn btn-theme w-100"><i class="fa fa-search"></i></button>
+        </div>
+        <!-- Clear Filters Button -->
+        <div class="col-md-1 mb-2">
+            <a href="{% url 'DjangoHUDApp:pageOrder' %}" class="btn btn-outline-secondary w-100">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block js %}
+	<script src="{% static 'plugins/@highlightjs/cdn-assets/highlight.min.js' %}"></script>
+	<script src="{% static 'js/demo/highlightjs.demo.js' %}"></script>
+	<script src="{% static 'js/demo/sidebar-scrollspy.demo.js' %}"></script>
+	<script src="{% static 'plugins/chart.js/dist/chart.umd.js' %}"></script>
+	<script src="{% static 'js/demo/chart-js.demo.js' %}"></script>
+
+<!-- script -->
+{% endblock %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+	<div class="d-flex align-items-center mb-3">
+		<div>
+			<h1 class="page-header mb-0">ΛΙΣΤΑ ΑΠΟΘΗΚΩΝ</h1>
+		</div>
+		
+	</div>
+	
+<!-- required js -->
+
+<!-- html -->
+{% comment %} <canvas id="barChart" height="200"></canvas> {% endcomment %}
+
+
+	
+	<div class="card">
+		<div class="tab-content p-4">
+			<div class="tab-pane fade show active" id="allTab">
+				<!-- BEGIN input-group -->
+				<!-- END input-group -->
+				
+				<!-- BEGIN table -->
+				<div class="table-responsive">
+					<table class="table table-hover text-nowrap">
+						<thead>
+							<tr>
+								<th class="pt-0 pb-2"></th>
+								<th class="pt-0 pb-2">Αποθήκη</th>
+								<th class="pt-0 pb-2">Τελευταία Εισαγωγή</th>
+								<th class="pt-0 pb-2">Περιγραφή</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for warehouse in warehouses %}
+
+						<tr>
+								<td class="w-10px align-middle">
+								</td>
+							<td>
+								<div class="d-flex align-items-center">
+									<!-- If you had an image or icon for each warehouse, it would go here. Otherwise, remove this div. -->
+									<div class="ms-3">
+										<!-- Adjust the URL name as per your urls.py for the warehouse details page -->
+										<a href="{% url 'DjangoHUDApp:pageStockPerWarehouse' warehouse.name %}" class="text-inverse text-opacity-75 text-decoration-none">{{ warehouse.name }}</a>
+									</div>
+								</div>
+							</td>
+                    		<td>{{ warehouse.last_shipment_date|date:"Y-m-d H:i" }}</td>
+
+								<td class="align-middle">{{ warehouse.description }}</td>
+							</tr>
+							{% empty %}
+							<tr>
+								<td colspan="5" class="text-center">No warehouses found.</td>
+							</tr>
+							{% endfor %}
+
+						</tbody>
+					</table>
+				</div>
+				<!-- END table -->
+			</div>
+		</div>
+		<div class="card-arrow">
+			<div class="card-arrow-top-left"></div>
+			<div class="card-arrow-top-right"></div>
+			<div class="card-arrow-bottom-left"></div>
+			<div class="card-arrow-bottom-right"></div>
+		</div>
+	</div>
+{% endblock %}

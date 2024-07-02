@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters_tags %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+    <div class="d-flex align-items-center mb-3">
+        <div>
+            <h1 class="page-header mb-0">Αποθέματα / Προιόντα αποθήκης {{ warehouse.name }}</h1>
+        </div>
+    </div>
+
+    <!-- Include the filter form -->
+    {% render_stock_filter_form filter %}
+
+    <div class="card">
+        <div class="tab-content p-4">
+            <div class="tab-pane fade show active" id="allTab">
+                <!-- BEGIN table -->
+                <div class="table-responsive">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="pt-0 pb-2"></th>
+                                <th class="pt-0 pb-2">Αρ. Μερίδας</th>
+                                <th class="pt-0 pb-2">Προιόν</th>
+                                <th class="pt-0 pb-2">Απόθεμα</th>
+                                <th class="pt-0 pb-2">Κατηγορία</th>
+                                <th class="pt-0 pb-2">Χρήση</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stock_item in stock_items %}
+                            <tr>
+                                <td class="w-10px align-middle">
+                                </td>
+                                <td class="align-middle">{{ stock_item.product.batch_number }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="w-50px h-50px bg-inverse bg-opacity-25 d-flex align-items-center justify-content-center">
+                                            <!-- Display product image if exists -->
+                                            <img alt="{{ stock_item.product.name }}" class="mw-100 mh-100" src="{% if stock_item.product.image %}{{ stock_item.product.image.url }}{% else %}{% static 'img/default-image.jpg' %}{% endif %}">
+                                        </div>
+                                        <div class="ms-3">
+                                            <a href="{% url 'DjangoHUDApp:pageProductDetails' stock_item.product.id %}" class="text-inverse text-opacity-75 text-decoration-none">{{ stock_item.product.name }}</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">{{ stock_item.quantity }}</td>
+                                <td class="align-middle">{{ stock_item.product.category.name }}</td>
+                                <td class="align-middle">{{ stock_item.product.usage.name }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center">No products found in this warehouse.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END table -->
+            </div>
+        </div>
+        <div class="card-arrow">
+            <div class="card-arrow-top-left"></div>
+            <div class="card-arrow-top-right"></div>
+            <div class="card-arrow-bottom-left"></div>
+            <div class="card-arrow-bottom-right"></div>
+        </div>
+    </div>
+{% endblock %}

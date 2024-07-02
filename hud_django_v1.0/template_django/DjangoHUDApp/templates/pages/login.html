@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Login{% endblock %}
+{% block content %}
+<!-- BEGIN login -->
+<div class="login">
+  <!-- BEGIN login-content -->
+  <div class="login-content">
+    <form
+      action="{% url 'DjangoHUDApp:pageLogin' %}"
+      method="POST"
+      name="login_form"
+    >
+      {% csrf_token %}
+      <h1 class="text-center">Sign In</h1>
+      <div class="text-inverse text-opacity-50 text-center mb-4">
+        Σύστημα Διαχείρησης Αποθηκών ΤΔΒ 487
+      </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Username <span class="text-danger">*</span></label
+        >
+        {{ form.username }}
+      </div>
+      <div class="mb-3">
+        <div class="d-flex">
+          <label class="form-label"
+            >Password <span class="text-danger">*</span></label
+          >
+        </div>
+        {{ form.password }}
+      </div>
+      <button
+        type="submit"
+        class="btn btn-outline-theme btn-lg d-block w-100 fw-500 mb-3"
+      >
+        Sign In
+      </button>
+      <div class="text-center text-inverse text-opacity-50">
+        DEVELOPED BY RICHTERLABS
+      </div>
+    </form>
+  </div>
+  <!-- END login-content -->
+</div>
+<!-- END login -->
+{% endblock %}

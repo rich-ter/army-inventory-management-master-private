@@ -1,0 +1,19 @@
+{% load widget_tweaks %}
+<form method="get" class="form-inline mb-3 d-flex justify-content-center align-items-center">
+    <div class="row align-items-center mb-3 w-100">
+        <!-- Search Input -->
+        <div class="col-md-6 mb-2">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control ps-35px" placeholder="Αναζήτηση Παραλήπτη" value="{{ request.GET.search }}">
+            </div>
+        </div>
+        <div class="col-md-1 mb-2">
+            <button type="submit" class="btn btn-theme w-100"><i class="fa fa-search"></i></button>
+        </div>
+        <div class="col-md-1 mb-2">
+            <a href="{% url 'DjangoHUDApp:pageRecipient' %}" class="btn btn-outline-secondary w-100">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+    </div>
+</form>

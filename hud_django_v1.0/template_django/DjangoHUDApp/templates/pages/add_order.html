@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Καταχώρηση Διακίνησης{% endblock %}
+
+{% block css %}
+<link href="{% static 'plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<style>
+    .center-button-container {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'plugins/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+    // Function to update recipient label based on shipment_type
+    function updateRecipientLabel() {
+        var shipmentType = $('#shipment_type_id').val();
+        var recipientLabel = $('label[for="id_recipient"]');
+        if (shipmentType === 'IN') {  // Adjust this condition based on your shipment type values
+            recipientLabel.text('Αποστολέας');
+        } else {
+            recipientLabel.text('Παραλήπτης');
+        }
+    }
+
+    // Initial call to set the correct label on page load
+    updateRecipientLabel();
+
+    // Change event to update the label when shipment type changes
+    $('#shipment_type_id').change(function() {
+        updateRecipientLabel();
+    });
+
+    $('#add-more-items').click(function() {
+        var totalForms = $('#id_' + '{{ formset.prefix }}-TOTAL_FORMS');
+        var currentFormCount = parseInt(totalForms.val());
+        var formsetContainer = $("#shipment-items-container");
+
+        // Clone the last form in the formset
+        var lastForm = $(".shipment-item-form:last").clone(true);
+
+        // Update the form number in the form's input names and IDs
+        lastForm.find(':input').each(function() {
+            var name = $(this).attr('name');
+            var id = $(this).attr('id');
+
+            // Increment form index in the name and id for the cloned form inputs and labels
+            name = name.replace(/-\d+-/, '-' + currentFormCount + '-');
+            id = id.replace(/-\d+-/, '-' + currentFormCount + '-');
+
+            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+        });
+
+        // Update labels for new inputs
+        lastForm.find('label').each(function() {
+            var newFor = $(this).attr('for').replace(/-\d+-/, '-' + currentFormCount + '-');
+            $(this).attr('for', newFor);
+        });
+
+        // Increment the TOTAL_FORMS count
+        totalForms.val(currentFormCount + 1);
+
+        // Append the cloned form to the container
+        lastForm.appendTo(formsetContainer);
+    });
+
+    // Validate file input
+    $('#image').on('change', function(event) {
+        var file = event.target.files[0];
+        if (file) {
+            var maxSize = 5 * 1024 * 1024; // 5 MB
+            if (file.size > maxSize) {
+                alert('Το μέγεθος του αρχείου δεν πρέπει να υπερβαίνει τα 5 MB');
+                event.target.value = '';
+            }
+            var validTypes = ['image/jpeg', 'image/png'];
+            if (!validTypes.includes(file.type)) {
+                alert('Επιτρέπονται μόνο αρχεία JPG και PNG');
+                event.target.value = '';
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center mb-3">
+    <div>
+        <h1 class="page-header mb-0">Καταχώρηση Διακίνησης</h1>
+    </div>
+</div>
+<div class="row gx-4">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
+                Πληροφορίες Διακίνησης
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="card-body">
+                    {{ form.as_p }}
+                    <!-- Shipment Item Section -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
+                            Προϊόντα
+                        </div>
+                        <div class="card-body" id="shipment-items-container">
+                            {{ formset.management_form }}
+                            {% for form in formset %}
+                                <div class="shipment-item-form">
+                                    <div class="row">
+                                        <!-- Product Field -->
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                {{ form.product.label_tag }}
+                                                {{ form.product }}
+                                                {{ form.product.errors }}
+                                            </div>
+                                        </div>
+                                        <!-- Warehouse Field -->
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                {{ form.warehouse.label_tag }}
+                                                {{ form.warehouse }}
+                                                {{ form.warehouse.errors }}
+                                            </div>
+                                        </div>
+                                        <!-- Quantity Field -->
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                {{ form.quantity.label_tag }}
+                                                {{ form.quantity }}
+                                                {{ form.quantity.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" id="add-more-items" class="btn btn-info">Προσθήκη προιόντων</button>
+                    </div>
+                </div>
+                {% comment %} <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
+                        Φωτογραφία
+                    </div>
+                    <div class="card-body">
+                        <input type="file" id="image" name="image" class="form-control" accept="image/jpeg, image/png">
+                    </div>
+                </div> {% endcomment %}
+                <div class="center-button-container">
+                    <button type="submit" class="btn btn-outline-theme btn-lg">Καταχώρηση Διακίνησης</button>
+                </div>            
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

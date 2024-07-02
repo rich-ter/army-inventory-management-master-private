@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} ΠΑΡΑΛΗΠΤΕΣ {% endblock %}
+
+{% block content %}
+    <div class="d-flex align-items-center mb-3">
+        <div>
+            <h1 class="page-header mb-0">ΠΑΡΑΛΗΠΤΕΣ</h1>
+        </div>
+    </div>
+
+    <!-- Search Form -->
+    <form method="get" class="form-inline mb-3 d-flex justify-content-center align-items-center">
+        <div class="row align-items-center mb-3 w-100">
+            <!-- Search Input -->
+            <div class="col-md-6 mb-2">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control ps-35px" placeholder="Αναζήτηση Παραλήπτη" value="{{ request.GET.search }}">
+                </div>
+            </div>
+            <div class="col-md-1 mb-2">
+                <button type="submit" class="btn btn-theme w-100"><i class="fa fa-search"></i></button>
+            </div>
+            <div class="col-md-1 mb-2">
+                <a href="{% url 'DjangoHUDApp:pageRecipient' %}" class="btn btn-outline-secondary w-100">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <div class="card">
+        <div class="tab-content p-4">
+            <div class="tab-pane fade show active" id="allTab">
+                <!-- BEGIN table -->
+                <div class="table-responsive">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="pt-0 pb-2"></th>
+                                <th class="pt-0 pb-2">ΣΧΗΜΑΤΙΣΜΟΣ</th>
+                                <th class="pt-0 pb-2">ΑΠΟΔΕΚΤΗΣ</th>
+                                <th class="pt-0 pb-2">ΣΧΟΛΙΑ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for recipient in recipients %}
+                            <tr>
+                                <td class="w-10px align-middle"></td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <a href="" class="text-inverse text-opacity-75 text-decoration-none">{{ recipient.commanding_unit }}</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">{{ recipient.recipient_unit }}</td>
+                                <td class="align-middle">{{ recipient.notes }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">No Recipients found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END table -->
+                
+                <div class="d-md-flex align-items-center">
+                </div>
+            </div>
+        </div>
+        <div class="card-arrow">
+            <div class="card-arrow-top-left"></div>
+            <div class="card-arrow-top-right"></div>
+            <div class="card-arrow-bottom-left"></div>
+            <div class="card-arrow-bottom-right"></div>
+        </div>
+    </div>
+{% endblock %}

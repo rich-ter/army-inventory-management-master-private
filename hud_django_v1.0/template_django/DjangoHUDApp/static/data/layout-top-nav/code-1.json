@@ -1,0 +1,6 @@
+def layoutTopNav(request):
+  context = {
+    "appTopNav": 1,
+    "appSidebarHide": 1
+  }
+  return render(request, "pages/layout-top-nav.html", context)

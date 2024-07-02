@@ -1,0 +1,51 @@
+{% load widget_tweaks %}
+
+<form method="get" aclass="form-inline mb-3 d-flex justify-content-center align-items-center">
+    <div class="row align-items-center mb-3">
+        <!-- Search Input -->
+        <div class="col-md-4 mb-2">
+            <div class="input-group">
+                <input type="text" name="name" class="form-control ps-35px" placeholder="Αναζήτηση Προιόντος"
+                       value="{{ filter.data.search }}">
+            </div>
+        </div>
+        <!-- Category Dropdown -->
+        <div class="col-md-3 mb-2">
+            <div class="dropdown">
+                <button class="btn btn-outline-default dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Κατηγορία</button>
+                <div class="dropdown-menu">
+                    {% for choice in filter.form.category.field.choices %}
+                <a class="dropdown-item" href="?category={{ choice.0 }}">{{ choice.1 }}</a>
+
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="category" id="category-input" value="{{ request.GET.category }}">
+            </div>
+        </div>
+        <!-- Usage Dropdown -->
+        <div class="col-md-3 mb-2">
+            <div class="dropdown">
+                <button class="btn btn-outline-default dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Χρήση</button>
+                <div class="dropdown-menu w-100">
+                    {% for choice in filter.form.usage.field.choices  %}
+                <a class="dropdown-item" href="?usage={{ choice.0 }}">{{ choice.1 }}</a>
+
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="usage" id="usage-input" value="{{ request.GET.usage }}">
+            </div>
+        </div>
+        <!-- Submit Button -->
+        <div class="col-md-1 mb-2">
+            <button type="submit" class="btn btn-theme w-100"><i class="fa fa-search"></i></button>
+        </div>
+        <!-- Clear Filters Button -->
+        <div class="col-md-1 mb-2">
+            <a href="{% url 'DjangoHUDApp:pageOrder' %}" class="btn btn-outline-secondary w-100">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+    </div>
+</form>

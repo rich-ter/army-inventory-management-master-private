@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters_tags %}
+
+{% block title %}Products{% endblock %}
+
+{% block css %}
+    <link href="{% static 'css/lightbox.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/lightbox.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex align-items-center mb-3">
+        <div>
+            <h1 class="page-header mb-0">Λίστα Προιόντων</h1>
+        </div>
+        
+        <div class="ms-auto">
+            <a href="add-product" class="btn btn-outline-theme"><i class="fa fa-plus-circle fa-fw me-1"></i> Νέο Προιόν</a>
+        </div>
+    </div>
+    <!-- Include the filter form -->
+    {% render_product_filter_form filter %}
+    <div class="card">
+        {% comment %} <ul class="nav nav-tabs nav-tabs-v2 px-4">
+            <li class="nav-item me-3"><a href="#allTab" class="nav-link active px-2" data-bs-toggle="tab">All</a></li>
+            <li class="nav-item me-3"><a href="#publishedTab" class="nav-link px-2" data-bs-toggle="tab">Published</a></li>
+            <li class="nav-item me-3"><a href="#expiredTab" class="nav-link px-2" data-bs-toggle="tab">Expired</a></li>
+            <li class="nav-item me-3"><a href="#deletedTab" class="nav-link px-2" data-bs-toggle="tab">Deleted</a></li>
+        </ul> {% endcomment %}
+        <div class="tab-content p-4">
+            <div class="tab-pane fade show active" id="allTab">
+
+                <!-- BEGIN table -->
+                <div class="table-responsive">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="pt-0 pb-2">Προιόν</th>
+                                <th class="pt-0 pb-2">Απόθεμα</th>
+                                <th class="pt-0 pb-2">Κατηγορία</th>
+                                <th class="pt-0 pb-2">Χρήση</th>
+                                <th class="border-top-0 pt-0 pb-2">Διαγραφή</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="w-50px h-50px bg-inverse bg-opacity-25 d-flex align-items-center justify-content-center">
+                                                {% if product.image %}
+                                                    <a href="{{ product.image.url }}" data-lightbox="product-{{ product.id }}" data-title="{{ product.name }}">
+                                                        <img alt="{{ product.name }}" class="mw-100 mh-100" src="{{ product.image.url }}">
+                                                    </a>
+                                                {% else %}
+                                                    <img alt="" class="mw-100 mh-100" src="{% static 'img/default-image.jpg' %}">
+                                                {% endif %}
+                                            </div>
+                                            <div class="ms-3">
+                                                <a href="{% url 'DjangoHUDApp:pageProductDetails' product.id %}" class="text-inverse text-opacity-75 text-decoration-none">{{ product.name }}</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">{{ product.stock }}</td> <!-- Assuming you have a stock field -->
+                                    <td class="align-middle">{{ product.category }}</td>
+                                    <td class="align-middle">{{ product.usage }}</td>
+                                    <td class="align-middle">
+                                        <form method="post" action="{% url 'DjangoHUDApp:delete_product' product.id %}" style="display:inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">No products found.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END table -->
+                
+                <div class="d-md-flex align-items-center">
+                    <div class="me-md-auto text-md-left text-center mb-2 mb-md-0">
+                        Showing {{ products.start_index }} to {{ products.end_index }} of {{ products.paginator.count }} entries
+                    </div>
+                    <ul class="pagination mb-0 justify-content-center">
+                        {% if products.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page=1">Πρώτη</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Προηγούμενη</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link">Πρώτη Σελίδα</a></li>
+                            <li class="page-item disabled"><a class="page-link">Προηγούμενη</a></li>
+                        {% endif %}
+                        
+                        {% for num in products.paginator.page_range %}
+                            {% if products.number == num %}
+                                <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if products.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Επόμενη</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ products.paginator.num_pages }}">Τελευταία</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link">Επόμενη</a></li>
+                            <li class="page-item disabled"><a class="page-link">Τελευταία</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-arrow">
+            <div class="card-arrow-top-left"></div>
+            <div class="card-arrow-top-right"></div>
+            <div class="card-arrow-bottom-left"></div>
+            <div class="card-arrow-bottom-right"></div>
+        </div>
+    </div>
+{% endblock %}

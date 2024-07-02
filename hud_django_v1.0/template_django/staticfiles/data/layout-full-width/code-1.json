@@ -1,0 +1,6 @@
+def layoutFullWidth(request):
+  context = {
+    "appContentFullWidth": 1,
+    "appSidebarHide": 1
+  }
+  return render(request, "pages/layout-full-width.html", context)
