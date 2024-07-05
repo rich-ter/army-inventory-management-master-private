@@ -4,7 +4,8 @@
   <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
     <!-- BEGIN menu -->
     <div class="menu">
-      {% for menu in sidebar_menu %} {% if menu.is_header %}
+      {% for menu in sidebar_menu %} 
+      {% if menu.is_header %}
       <div class="menu-header">{{ menu.text }}</div>
       {% elif menu.is_divider %}
       <div class="menu-divider"></div>
@@ -29,11 +30,12 @@
         </div>
         {% endif %}
       </div>
-      {% endif %} {% endfor %}
+      {% endif %} 
+      {% endfor %}
     </div>
     <!-- END menu -->
     <div class="p-3 px-4 mt-auto">
-      <a href="add-shipment" class="btn d-block btn-outline-theme">
+      <a href="{% url 'DjangoHUDApp:add_shipment' %}" class="btn d-block btn-outline-theme">
         <i class="fa fa-code-branch me-2 ms-n2 opacity-5"></i> Δημιουργία Διακίνησης
       </a>
     </div>

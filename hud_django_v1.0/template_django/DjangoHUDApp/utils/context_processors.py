@@ -1,4 +1,4 @@
-from django.urls import resolve
+from django.urls import resolve, reverse
 
 def mark_active_link(menu, current_path_name):
     for item in menu:
@@ -16,35 +16,34 @@ def sidebar_menu(request):
     user = request.user
     user_groups = user.groups.values_list('name', flat=True)
     
-    # Define the sidebar menu
     sidebar_menu = [{
         'text': 'Επιλογές',
         'is_header': 1
     }, {
-        'url': '/index',
+        'url': reverse('DjangoHUDApp:index'),
         'icon': 'bi bi-cpu',
         'text': 'Πίνακας Ελέγχου',
         'name': 'index',
-        'groups': ['ΔΙΔΕΣ', 'ΔΟΡΥΦΟΡΙΚΑ', 'admin']  # Specify groups and admin that can see this item
+        'groups': ['ΔΙΔΕΣ', 'ΔΟΡΥΦΟΡΙΚΑ', 'admin']
     }, {
         'is_divider': 1
     }, {
         'text': 'Ενέργειες Προιόντων',
         'is_header': 1
     }, {
-        'url': '/all-products',
+        'url': reverse('DjangoHUDApp:pageProduct'),
         'icon': 'fas fa-tags',
         'text': 'Λίστα Προιόντων',
         'name': 'pageProduct',
         'groups': ['ΔΙΔΕΣ', 'ΔΟΡΥΦΟΡΙΚΑ', 'admin']
     }, {
-        'url': '/add-product',
+        'url': reverse('DjangoHUDApp:add_product'),
         'icon': 'fas fa-plus',
         'text': 'Προσθήκη Προιόντος',
-        'name': 'dashboard',
+        'name': 'add_product',
         'groups': ['ΔΙΔΕΣ', 'ΔΟΡΥΦΟΡΙΚΑ', 'admin']
     }, {
-        'url': '/stock',
+        'url': reverse('DjangoHUDApp:pageDataManagement'),
         'icon': 'fas fa-barcode',
         'text': 'Αποθέματα',
         'name': 'pageDataManagement',
@@ -55,22 +54,22 @@ def sidebar_menu(request):
         'text': 'Ενέργιες Διακινίσεων',
         'is_header': 1
     }, {
-        'url': '/order',
+        'url': reverse('DjangoHUDApp:pageOrder'),
         'icon': 'bi bi-layout-sidebar',
         'text': 'Λίστα Διακινίσεων',
-        'name': '',
+        'name': 'pageOrder',
         'groups': ['ΔΙΔΕΣ', 'ΔΟΡΥΦΟΡΙΚΑ', 'admin']
     }, {
-        'url': '/add-shipment',
+        'url': reverse('DjangoHUDApp:add_shipment'),
         'icon': 'far fa-envelope',
-        'text': 'Δημιουργία Διακίνισης',
-        'name': 'dashboard',
+        'text': 'Δημιουργία Διακίνησης',
+        'name': 'add_shipment',
         'groups': ['ΔΙΔΕΣ', 'ΔΟΡΥΦΟΡΙΚΑ', 'admin']
     }, {
-        'url': '/recipient',
+        'url': reverse('DjangoHUDApp:pageRecipient'),
         'icon': 'far fa-address-book',
         'text': 'Παραλήπτες',
-        'name': 'dashboard',
+        'name': 'pageRecipient',
         'groups': ['ΔΙΔΕΣ', 'ΔΟΡΥΦΟΡΙΚΑ', 'admin']
     }, {
         'is_divider': 1
@@ -78,28 +77,28 @@ def sidebar_menu(request):
         'text': 'Ενέργειες Αποθηκών',
         'is_header': 1
     }, {
-        'url': '/warehouse',
+        'url': reverse('DjangoHUDApp:pageWarehouse'),
         'icon': 'fas fa-cubes',
         'text': 'Λίστα Αποθηκών',
-        'name': 'dashboard',
+        'name': 'pageWarehouse',
         'groups': ['ΔΙΔΕΣ', 'admin']
     }, {
-        'url': '/stock-per-warehouse/ΚΕΠΙΚ',
+        'url': reverse('DjangoHUDApp:pageStockPerWarehouse', kwargs={'warehouse_name': 'ΚΕΠΙΚ'}),
         'icon': 'fas fa-server',
         'text': 'Αποθήκη ΚΕΠΙΚ',
-        'name': 'dashboard',
+        'name': 'pageStockPerWarehouse',
         'groups': ['ΔΙΔΕΣ', 'admin']
     }, {
-        'url': '/stock-per-warehouse/ΤΑΓΜΑ',
+        'url': reverse('DjangoHUDApp:pageStockPerWarehouse', kwargs={'warehouse_name': 'ΤΑΓΜΑ'}),
         'icon': 'fas fa-building',
         'text': 'Αποθήκη Τάγματος',
-        'name': 'dashboard',
+        'name': 'pageStockPerWarehouse',
         'groups': ['ΔΙΔΕΣ', 'admin']
     }, {
-        'url': '/stock-per-warehouse/ΔΟΡΥΦΟΡΙΚΑ',
+        'url': reverse('DjangoHUDApp:pageStockPerWarehouse', kwargs={'warehouse_name': 'ΔΟΡΥΦΟΡΙΚΑ'}),
         'icon': 'fas fa-signal',
         'text': 'Αποθήκη Δορυφορικών',
-        'name': 'dashboard',
+        'name': 'pageStockPerWarehouse',
         'groups': ['ΔΟΡΥΦΟΡΙΚΑ', 'admin']
     }, {
         'is_divider': 1
@@ -107,7 +106,7 @@ def sidebar_menu(request):
         'text': 'Άλλες Ενέργειες',
         'is_header': 1
     }, {
-        'url': '/logout',
+        'url': reverse('DjangoHUDApp:logout'),
         'icon': 'bi bi-people',
         'text': 'Έξοδος',
         'name': 'logout',

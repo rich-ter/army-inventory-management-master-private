@@ -3,6 +3,7 @@ from .models import Product, Shipment, ShipmentItem, Warehouse
 from django.forms import inlineformset_factory
 from django.contrib.auth.models import Group
 from .models import Product, ProductCategory, ProductUsage
+from django.utils import timezone
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -46,9 +47,9 @@ class ProductForm(forms.ModelForm):
 class ShipmentForm(forms.ModelForm):
     class Meta:
         model = Shipment
-        fields = ['shipment_type', 'recipient', 'date',  'notes', 'attachment']
+        fields = ['shipment_type', 'recipient', 'date', 'notes', 'attachment']
         widgets = {
-            'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Select a date', 'type': 'date'}),
+            'date': forms.DateTimeInput(attrs={'class': 'form-control', 'placeholder': 'Select a date and time', 'type': 'text'}),
             'shipment_type': forms.Select(attrs={'class': 'form-select', 'id': 'shipment_type_id'}),
             'recipient': forms.Select(attrs={'class': 'form-select', 'id': 'recipient_id'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
@@ -57,13 +58,19 @@ class ShipmentForm(forms.ModelForm):
         labels = {
             'shipment_type': 'Τύπος Αποστολής',  # Custom title for shipment_type
             'recipient': 'Παραλήπτης',  # Custom title for recipient
-            'date': 'Ημερομηνία',  # Custom title for date
+            'date': 'Ημερομηνία και Ώρα',  # Custom title for date
             'notes': 'Σημειώσεις',  # Custom title for notes
             'attachment': 'Συνημμένο'  # Custom title for attachment
         }
 
+    date = forms.DateTimeField(input_formats=['%d-%m-%Y %H:%M'], widget=forms.DateTimeInput(attrs={
+        'class': 'form-control', 'placeholder': 'Select a date and time', 'type': 'text', 'autocomplete': 'off'
+    }))
+
     def __init__(self, *args, **kwargs):
         super(ShipmentForm, self).__init__(*args, **kwargs)
+        if 'initial' not in kwargs:
+            self.fields['date'].initial = timezone.now().strftime('%d-%m-%Y %H:%M')
 
 class ShipmentItemForm(forms.ModelForm):
     class Meta:

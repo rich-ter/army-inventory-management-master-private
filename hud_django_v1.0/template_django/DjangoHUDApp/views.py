@@ -142,29 +142,34 @@ def add_shipment(request):
         form = ShipmentForm(request.POST, request.FILES)
         formset = ShipmentItemFormSet(request.POST, prefix='shipmentitem', user=request.user)
 
-        if form.is_valid() and formset.is_valid():
-            try:
-                with transaction.atomic():
-                    shipment = form.save(commit=False)
-                    shipment.user = request.user
-                    shipment.date = timezone.now()
-                    shipment.save()
+        if form.is_valid():
+            if formset.is_valid() and formset.total_form_count() > 0:
+                try:
+                    with transaction.atomic():
+                        shipment = form.save(commit=False)
+                        shipment.user = request.user
+                        shipment.save()
 
-                    formset.instance = shipment
-                    formset.save()
+                        formset.instance = shipment
+                        formset.save()
 
-                    return redirect('DjangoHUDApp:pageOrder')
-            except ValidationError as e:
-                form.add_error(None, e)
+                        return redirect('DjangoHUDApp:pageOrder')
+                except ValidationError as e:
+                    form.add_error(None, e)
+            else:
+                if formset.total_form_count() == 0:
+                    formset._non_form_errors = formset.error_class(["At least one product is required in the shipment."])
+                else:
+                    form.add_error(None, "Please correct the errors below.")
         else:
             print(form.errors)
             print(formset.errors)
     else:
-        form = ShipmentForm()
+        initial_datetime = timezone.now().strftime('%d-%m-%Y %H:%M')
+        form = ShipmentForm(initial={'date': initial_datetime})
         formset = ShipmentItemFormSet(prefix='shipmentitem', user=request.user)
 
     return render(request, 'pages/add_order.html', {'form': form, 'formset': formset})
-
 
 @login_required
 def delete_shipment(request, shipment_id):

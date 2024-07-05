@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
 {% block title %}Καταχώρηση Διακίνησης{% endblock %}
@@ -11,6 +10,10 @@
         display: flex;
         justify-content: center;
     }
+    .errorlist {
+        color: red;
+        margin-top: 5px;
+    }
 </style>
 {% endblock %}
 
@@ -19,11 +22,18 @@
 <script src="{% static 'plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
 <script>
 $(document).ready(function() {
+    // Initialize datepicker with correct format
+    $('#id_date').datepicker({
+        format: 'dd-mm-yyyy', // Set date format
+        autoclose: true,
+        todayHighlight: true
+    });
+
     // Function to update recipient label based on shipment_type
     function updateRecipientLabel() {
         var shipmentType = $('#shipment_type_id').val();
         var recipientLabel = $('label[for="id_recipient"]');
-        if (shipmentType === 'IN') {  // Adjust this condition based on your shipment type values
+        if (shipmentType === 'IN') {
             recipientLabel.text('Αποστολέας');
         } else {
             recipientLabel.text('Παραλήπτης');
@@ -115,6 +125,13 @@ $(document).ready(function() {
                         </div>
                         <div class="card-body" id="shipment-items-container">
                             {{ formset.management_form }}
+                            {% if formset.non_form_errors %}
+                                <div class="errorlist">
+                                    {% for error in formset.non_form_errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                             {% for form in formset %}
                                 <div class="shipment-item-form">
                                     <div class="row">
@@ -149,14 +166,6 @@ $(document).ready(function() {
                         <button type="button" id="add-more-items" class="btn btn-info">Προσθήκη προιόντων</button>
                     </div>
                 </div>
-                {% comment %} <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
-                        Φωτογραφία
-                    </div>
-                    <div class="card-body">
-                        <input type="file" id="image" name="image" class="form-control" accept="image/jpeg, image/png">
-                    </div>
-                </div> {% endcomment %}
                 <div class="center-button-container">
                     <button type="submit" class="btn btn-outline-theme btn-lg">Καταχώρηση Διακίνησης</button>
                 </div>            
