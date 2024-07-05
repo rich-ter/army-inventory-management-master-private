@@ -16,8 +16,18 @@
 ΦΙΛΤΡΟ ΗΜΕΡΟΜΗΝΙΩΝ ΣΤΗΝ ΑΡΧΙΚΗ ΝΑ ΔΟΥΛΕΥΕΙ
 
 ΗΜΕΡΟΜΗΝΙΑ ΣΤΗΝ ΔΗΜΙΟΥΡΓΙΑ ΔΙΑΚΙΝΗΣΗΣ ΝΑ ΜΠΟΡΕΙ ΝΑ ΤΗΝ ΒΑΛΕΙ ΚΑΠΟΙΟΣ ΜΙΑ ΣΥΓΚΕΚΡΙΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΑΛΛΑ ΤΟ DEFAULT ΝΑ ΕΙΝΑΙ ΤΟ ΣΗΜΕΡΙΝΟ.
+- DONE 
+
+DATE FOR THE SHIPMENTS TO BE IN THE EUROPE FORMAT
+- DONE
+
+PRINT BUTTON TO AUTOMATICALLY PRINT
+
+issue with the date selection
 
 PREVENT CREATING ORDER WITH 0 PRODUCTS
+
+IN THE SHIPMENT TO ADD A diatagi field and a month dropdown
 
 ------ DONE ------ 
 

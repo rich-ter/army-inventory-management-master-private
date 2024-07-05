@@ -47,11 +47,12 @@ class ProductForm(forms.ModelForm):
 class ShipmentForm(forms.ModelForm):
     class Meta:
         model = Shipment
-        fields = ['shipment_type', 'recipient', 'date', 'notes', 'attachment']
+        fields = ['shipment_type', 'recipient', 'date', 'order_number', 'notes', 'attachment']
         widgets = {
             'date': forms.DateTimeInput(attrs={'class': 'form-control', 'placeholder': 'Select a date and time', 'type': 'text'}),
             'shipment_type': forms.Select(attrs={'class': 'form-select', 'id': 'shipment_type_id'}),
             'recipient': forms.Select(attrs={'class': 'form-select', 'id': 'recipient_id'}),
+            'order_number': forms.TextInput(attrs={'class': 'form-control', 'id': 'order_number_id'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'attachment': forms.FileInput(attrs={'class': 'form-control'})  # Add this line for file input
         }
@@ -59,6 +60,7 @@ class ShipmentForm(forms.ModelForm):
             'shipment_type': 'Τύπος Αποστολής',  # Custom title for shipment_type
             'recipient': 'Παραλήπτης',  # Custom title for recipient
             'date': 'Ημερομηνία και Ώρα',  # Custom title for date
+            'order_number': 'Αριθμός Διαταγής',
             'notes': 'Σημειώσεις',  # Custom title for notes
             'attachment': 'Συνημμένο'  # Custom title for attachment
         }

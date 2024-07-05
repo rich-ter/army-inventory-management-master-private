@@ -103,6 +103,7 @@ class Shipment(models.Model):
     recipient = models.ForeignKey(Recipient, on_delete=models.CASCADE)
     notes = models.CharField(max_length=200, null=True, blank=True)
     attachment = models.FileField(upload_to='shipment_attachments/', validators=[validate_shipment_attachment], null=True, blank=True)
+    order_number = models.CharField(max_length=100, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.notes is None:

@@ -1,3 +1,5 @@
+{%load static%}
+{% load date_filters_greek %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,9 +73,7 @@
         <div class="protocol-title">
             <h1>ΠΡΩΤΟΚΟΛΛΟ ΠΑΡΑΔΟΣΗΣ – ΠΑΡΑΛΑΒΗΣ ΥΛΙΚΩΝ</h1>
         </div>
-        <p>Στην Αθήνα σήμερα, την {{ shipment.date.day }} του μηνός ____________________ του έτους {{ shipment.date.year }}</p>
-        <p>Ο υπογεγραμμένος ____________________ παρέλαβα από το 487 ΤΔΒ τα παρακάτω υλικά βάσει της διαταγής ________________:</p>
-
+        <p>Στην Αθήνα σήμερα, την {{  shipment.date.day }} του μηνός {{ shipment.date|greek_month }} του έτους {{ shipment.date.year }} Ο υπογεγραμμένος ____________________ </p><p>παρέλαβα από το 487 ΤΔΒ τα παρακάτω υλικά βάσει της διαταγής {% if shipment.order_number %}{{ shipment.order_number }}{% else %}____________________{% endif %}:</p>
         <!-- Product Table -->
         <table class='product-table'>
             <thead>
@@ -99,6 +99,8 @@
         </table>
 
         <!-- Signatories -->
+         <br>
+         <br>
         <div class="signatories">
             <table>
                 <tr>
