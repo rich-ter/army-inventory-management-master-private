@@ -1,3 +1,4 @@
+# forms.py
 from django import forms
 from .models import Product, Shipment, ShipmentItem, Warehouse
 from django.forms import inlineformset_factory
@@ -13,7 +14,6 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control form-control-lg bg-inverse bg-opacity-5', 'placeholder': 'Password'})
     )
-
 
 class ProductForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Όνομα Υλικού'}))
@@ -43,7 +43,7 @@ class ProductForm(forms.ModelForm):
         if user:
             user_groups = user.groups.all()
             self.fields['owners'].queryset = Group.objects.filter(user__in=user_groups).distinct()
-# forms.py
+
 class ShipmentForm(forms.ModelForm):
     class Meta:
         model = Shipment
@@ -100,15 +100,6 @@ class ShipmentItemForm(forms.ModelForm):
         self.fields['warehouse'].widget.attrs.update({'class': 'form-select'})
         self.fields['quantity'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Ποσότητα'})
 
-ShipmentItemFormSet = inlineformset_factory(
-    Shipment,
-    ShipmentItem,
-    form=ShipmentItemForm,
-    fields=('product', 'warehouse', 'quantity'),
-    extra=1,
-    can_delete=True
-)
-
 class ShipmentItemFormSetWithUser(forms.BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)  # Extract the user from the keyword arguments
@@ -121,7 +112,14 @@ class ShipmentItemFormSetWithUser(forms.BaseInlineFormSet):
                 user_groups = self.user.groups.all()
                 form.fields['product'].queryset = Product.objects.filter(owners__in=user_groups).distinct()
                 form.fields['warehouse'].queryset = Warehouse.objects.filter(access_groups__in=user_groups).distinct()
-                
+
+    def clean(self):
+        super().clean()
+        if any(self.errors):
+            return
+        if not any(form.cleaned_data and not form.cleaned_data.get('DELETE', False) for form in self.forms):
+            raise forms.ValidationError('You must add at least one shipment item.')
+
 ShipmentItemFormSet = inlineformset_factory(
     Shipment,
     ShipmentItem,

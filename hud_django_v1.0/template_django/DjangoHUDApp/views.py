@@ -142,8 +142,8 @@ def add_shipment(request):
         form = ShipmentForm(request.POST, request.FILES)
         formset = ShipmentItemFormSet(request.POST, prefix='shipmentitem', user=request.user)
 
-        if form.is_valid():
-            if formset.is_valid() and formset.total_form_count() > 0:
+        if form.is_valid() and formset.is_valid():
+            if any(item.cleaned_data and not item.cleaned_data.get('DELETE', False) for item in formset):
                 try:
                     with transaction.atomic():
                         shipment = form.save(commit=False)
@@ -157,13 +157,9 @@ def add_shipment(request):
                 except ValidationError as e:
                     form.add_error(None, e)
             else:
-                if formset.total_form_count() == 0:
-                    formset._non_form_errors = formset.error_class(["At least one product is required in the shipment."])
-                else:
-                    form.add_error(None, "Please correct the errors below.")
+                formset._non_form_errors = formset.error_class(["At least one product is required in the shipment."])
         else:
-            print(form.errors)
-            print(formset.errors)
+            form.add_error(None, "Please correct the errors below.")
     else:
         initial_date = timezone.now().strftime('%d-%m-%Y')
         form = ShipmentForm(initial={'date': initial_date})

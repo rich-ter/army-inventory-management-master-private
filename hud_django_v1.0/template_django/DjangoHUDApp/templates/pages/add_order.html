@@ -30,24 +30,23 @@ $(document).ready(function() {
         todayBtn: true,
         showMeridian: true
     });
-
-    // Function to update recipient based on shipment_type
-    function updateRecipient() {
-        var shipmentType = $('#id_shipment_type').val(); // Get the internal value
-        var recipientField = $('#id_recipient');
-        var recipientValue = recipientField.find("option:contains('487ΤΔΒ')").val(); // Find the option with text '487ΤΔΒ'
-
-        if (shipmentType === 'IN' && recipientValue) {
-            recipientField.val(recipientValue); // Set value to the option value for '487ΤΔΒ'
+    // Function to update recipient label based on shipment_type
+    function updateRecipientLabel() {
+        var shipmentType = $('#shipment_type_id').val();
+        var recipientLabel = $('label[for="id_recipient"]');
+        if (shipmentType === 'IN') {
+            recipientLabel.text('Αποστολέας');
+        } else {
+            recipientLabel.text('Παραλήπτης');
         }
     }
 
-    // Initial call to set the correct recipient on page load
-    updateRecipient();
+    // Initial call to set the correct label on page load
+    updateRecipientLabel();
 
-    // Change event to update the recipient when shipment type changes
-    $('#id_shipment_type').change(function() {
-        updateRecipient();
+    // Change event to update the label when shipment type changes
+    $('#shipment_type_id').change(function() {
+        updateRecipientLabel();
     });
 
     $('#add-more-items').click(function() {
@@ -120,6 +119,10 @@ $(document).ready(function() {
                 {{ form.non_field_errors }}
                 <div class="card-body">
                     {{ form.as_p }}
+                    <!-- Display formset non-form errors -->
+                    {% if formset.non_form_errors %}
+                        <div class="errorlist">{{ formset.non_form_errors }}</div>
+                    {% endif %}
                     <!-- Shipment Item Section -->
                     <div class="card mb-4">
                         <div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
