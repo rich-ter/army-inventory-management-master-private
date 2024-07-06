@@ -47,7 +47,7 @@
                                         #{{ shipment.id }}
                                     </a>
                                 </td>
-                                <td class="align-middle">{{shipment.date}}</td>
+                                <td class="align-middle">{{ shipment.date|date:"d-m-Y" }}</td>
                                 <td>{{ shipment.recipient|default:"-" }}</td>
                                 <td class="py-1 align-middle">
                                 {% if shipment.shipment_type == 'IN' %}

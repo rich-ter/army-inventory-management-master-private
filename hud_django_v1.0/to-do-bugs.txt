@@ -13,6 +13,9 @@
 
 ΟΤΑΝ ΕΙΣΕΡΧΟΜΕΝΗ ΑΝΤΙ ΓΙΑ ΠΑΡΑΛΗΠΤΗΣ ΑΠΟΣΤΟΛΕΑΣ
 
+MAKE SURE USERS CAN SEARCH FOR EVEN HALF THE NAME AND TO GET RESPONSES ON THE GO INSTEAD OF AFTER CLICKING THE SEARCH BUTTON.
+
+
 ΦΙΛΤΡΟ ΗΜΕΡΟΜΗΝΙΩΝ ΣΤΗΝ ΑΡΧΙΚΗ ΝΑ ΔΟΥΛΕΥΕΙ
 
 ΗΜΕΡΟΜΗΝΙΑ ΣΤΗΝ ΔΗΜΙΟΥΡΓΙΑ ΔΙΑΚΙΝΗΣΗΣ ΝΑ ΜΠΟΡΕΙ ΝΑ ΤΗΝ ΒΑΛΕΙ ΚΑΠΟΙΟΣ ΜΙΑ ΣΥΓΚΕΚΡΙΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΑΛΛΑ ΤΟ DEFAULT ΝΑ ΕΙΝΑΙ ΤΟ ΣΗΜΕΡΙΝΟ.
@@ -28,6 +31,14 @@ issue with the date selection
 PREVENT CREATING ORDER WITH 0 PRODUCTS
 
 IN THE SHIPMENT TO ADD A diatagi field and a month dropdown
+
+when we click on one warehouse it shows all of them as currently open in the navigation selection. they seem all toggled.
+
+
+remove all my logo branding etc. 
+make my pernal branch before that and add the mock products.
+
+
 
 ------ DONE ------ 
 

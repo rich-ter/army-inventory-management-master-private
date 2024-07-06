@@ -7,7 +7,7 @@
 {% block content %}
 	<div class="d-flex align-items-center mb-3">
 		<div>
-			<h1 class="page-header mb-0"> Πληροφορίες / Επεξεργασία Διακίνησης</h1>
+			<h1 class="page-header mb-0"> Πληροφορίες Διακίνησης</h1>
 		</div>
 	</div>
 	
@@ -33,7 +33,7 @@
 							<span class="w-20px h-20px p-0 d-flex align-items-center justify-content-center badge bg-theme text-theme-color position-absolute end-0 top-0 fw-bold fs-12px rounded-pill mt-n2 me-n2">{{item.quantity}}</span>
 							</div>
 							<div class="ps-3 flex-1">
-								<div><a href="#" class="text-decoration-none text-inverse">{{ item.product.name }}</a></div>
+							<div><a href="{% url 'DjangoHUDApp:pageProductDetails' item.product.id %}" class="text-decoration-none text-inverse">{{ item.product.name }}</a></div>
 								<div class="text-inverse text-opacity-50 small">
 									Αρ. Μερίδας: {{item.product.batch_number}}
 								</div>
@@ -67,8 +67,8 @@
 					<table class="table table-borderless table-sm m-0">
 						<tbody>
 							<tr>
-								<td class="w-150px">Ημερομηνία</td>
-								<td class="text-end pb-2 text-decoration-underline">{{ shipment.date|date:"d/m/Y H:i" }}</td>
+								<td class="pb-2" colspan="2">Ημερομηνία</td>
+								<td class="text-end pb-2"> <a class="text-success fw-bold small">{{ shipment.date|date:"d/m/Y H:i" }}</a></td>								
 							</tr>
 								<td colspan="3">
 								<hr class="m-0">
@@ -76,13 +76,20 @@
 							</tr>
 							<tr>
 								<td class="pb-2" colspan="2"><b>Tύπος Διακίνηση</b></td>
-								<td> <u class="text-end pb-2 text-success fw-bold small">{{shipment.shipment_type}}</u> <small></small></td>
+								<td class="text-end pb-2"> <a class="text-success fw-bold small">{{shipment.shipment_type}}</a></td>								
 							</tr>
 							</tr>
 								<td colspan="3">
 								<hr class="m-0">
 							</td>
 							</tr>
+							<tr>
+								<td class="pb-2" colspan="2"><b>Αριθμός Εντολής</b></td>
+								<td class="text-end pb-2"> <a class="text-decoration-none">{{shipment.order_number}}</a></td>								
+							</td>
+							</tr>
+								<td colspan="3">
+								<hr class="m-0">
 							<tr>
 								<td class="pb-2" colspan="2"><b>Δημιουργός</b></td>
 								<td class="text-end pb-2"> <a class="text-decoration-none">{{shipment.user}}</a></td>								
@@ -93,7 +100,12 @@
 							<tr>
 								<td class="pb-2" colspan="2"><b>Παραλήπτης</b></td>
 								<td class="text-end pb-2"> <a href="#" class="text-decoration-none">{{shipment.recipient}}</a></td>								
-							</td>
+							</tr>
+								<td colspan="3">
+								<hr class="m-0">
+							<tr>
+								<td class="pb-2" colspan="2"><b>Υπογεγραμμένος</b></td>
+								<td class="text-end pb-2"> <a href="#" class="text-decoration-none">{{shipment.signatory}}</a></td>								
 							</tr>
 							<tr>
 								<td colspan="3">

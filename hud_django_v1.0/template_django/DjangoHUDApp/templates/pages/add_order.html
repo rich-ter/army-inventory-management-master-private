@@ -26,9 +26,10 @@ $(document).ready(function() {
     $('#id_date').datepicker({
         format: 'dd-mm-yyyy', // Set date format
         autoclose: true,
-        todayHighlight: true
+        todayHighlight: true,
+        todayBtn: true,
+        showMeridian: true
     });
-
     // Function to update recipient label based on shipment_type
     function updateRecipientLabel() {
         var shipmentType = $('#shipment_type_id').val();

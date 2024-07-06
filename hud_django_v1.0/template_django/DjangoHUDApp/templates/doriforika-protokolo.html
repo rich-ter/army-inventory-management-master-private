@@ -1,4 +1,4 @@
-{%load static%}
+{% load static %}
 {% load date_filters_greek %}
 <!DOCTYPE html>
 <html lang="en">
@@ -7,30 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Material Delivery and Receipt Protocol</title>
     <style>
-        .container {
-            max-width: 1200px; /* Limiting the width */
-            margin: auto;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 20px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse; /* Ensures that borders between cells are merged */
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 15px; /* Increase padding for the cells */
-            text-align: center; /* Center align text */
-            border: 1px solid #ccc; /* Adds a light grey border around table cells */
-        }
-        th {
-            background-color: #f0f0f0; /* Light grey background for header cells */
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: white; /* Ensure background is white for print */
         }
         .header {
             text-align: right;
@@ -39,23 +27,48 @@
         .protocol-title {
             text-align: center;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
         .signatories {
             margin-top: 20px;
         }
         .signatories th, .signatories td {
-            padding: 5px; /* Adjust cell padding */
-            border: none; /* Remove borders from cells */
+            padding: 5px;
+            border: none;
         }
         .signatories table {
-            margin: auto; /* Center the table */
-            border-collapse: separate; /* Prevents cell borders from merging */
+            margin: auto;
+            border-collapse: separate;
         }
         .signature-name {
-            font-weight: bold; /* Make the text bold */
+            font-weight: bold;
         }
         .table-separator {
-            border-bottom: 2px solid black; /* Add a line after the table */
+            border-bottom: 2px solid black;
             margin-top: 20px;
+        }
+        @media print {
+            body {
+                background-color: white;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+            .no-print {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -73,7 +86,10 @@
         <div class="protocol-title">
             <h1>ΠΡΩΤΟΚΟΛΛΟ ΠΑΡΑΔΟΣΗΣ – ΠΑΡΑΛΑΒΗΣ ΥΛΙΚΩΝ</h1>
         </div>
-        <p>Στην Αθήνα σήμερα, την {{  shipment.date.day }} του μηνός {{ shipment.date|greek_month }} του έτους {{ shipment.date.year }} Ο υπογεγραμμένος ____________________ </p><p>παρέλαβα από το 487 ΤΔΒ τα παρακάτω υλικά βάσει της διαταγής {% if shipment.order_number %}{{ shipment.order_number }}{% else %}____________________{% endif %}:</p>
+        <p>Στην Αθήνα σήμερα, την {{ shipment.date.day }} του μηνός {{ shipment.date|greek_month }} του έτους {{ shipment.date.year }},
+        ο υπογεγραμμένος {% if shipment.signatory %}{{ shipment.signatory }}{% else %}____________________{% endif %}
+        παρέλαβα από το 487 ΤΔΒ τα παρακάτω υλικά βάσει της διαταγής {% if shipment.order_number %}{{ shipment.order_number }}{% else %}____________________{% endif %}:</p>
+        
         <!-- Product Table -->
         <table class='product-table'>
             <thead>
@@ -99,8 +115,6 @@
         </table>
 
         <!-- Signatories -->
-         <br>
-         <br>
         <div class="signatories">
             <table>
                 <tr>
@@ -120,14 +134,20 @@
                     <td>ΠΑΡΑΔΙΔΩΝ</td>
                     <td>ΔΧΣΤΗΣ</td>
                     <td>ΔΚΤΗΣ</td>
-                    <td>ΠΑΡΑΔΙΔΩΝ</td>
+                    <td>ΠΑΡΑΛΑΜΒΑΝΩΝ</td>
                     <td>ΔΧΣΤΗΣ</td>
                 </tr>
             </table>
         </div>
 
         <!-- Table Separator -->
-        {% comment %} <div class="table-separator"></div> {% endcomment %}
+        <div class="table-separator"></div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            window.print();
+        });
+    </script>
 </body>
 </html>

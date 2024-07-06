@@ -165,8 +165,8 @@ def add_shipment(request):
             print(form.errors)
             print(formset.errors)
     else:
-        initial_datetime = timezone.now().strftime('%d-%m-%Y %H:%M')
-        form = ShipmentForm(initial={'date': initial_datetime})
+        initial_date = timezone.now().strftime('%d-%m-%Y')
+        form = ShipmentForm(initial={'date': initial_date})
         formset = ShipmentItemFormSet(prefix='shipmentitem', user=request.user)
 
     return render(request, 'pages/add_order.html', {'form': form, 'formset': formset})
@@ -396,37 +396,70 @@ def index(request):
     user_groups = user.groups.all()
 
     # Calculate the total number of products the user can view in their warehouses
-    total_products = Product.objects.filter(owners__in=user_groups).distinct().count()
+    if user.is_superuser:
+        total_products = Product.objects.all().count()
+    else:
+        total_products = Product.objects.filter(owners__in=user_groups).distinct().count()
+
     total_shipments_sent = Shipment.objects.filter(user=user).count()
 
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
 
-    shipments = Shipment.objects.all()
+    if user.is_superuser:
+        shipments = Shipment.objects.all()
+    else:
+        shipments = Shipment.objects.filter(
+            Q(user=user) | Q(user__groups__in=user_groups)
+        ).distinct()
+
     stocks = Stock.objects.all()
 
-    top_products = (Stock.objects
-                    .filter(warehouse__access_groups__in=user_groups)
-                    .select_related('product__category', 'product__usage')
-                    .annotate(
-                        product_name=F('product__name'),
-                        product_image_url=F('product__image'),
-                        product_category_name=F('product__category__name'),
-                        product_batch_number=F('product__batch_number'),
-                        product_unit_of_measurement=F('product__unit_of_measurement'),
-                        product_usage_name=F('product__usage__name'),
-                        total_quantity=Sum('quantity')
-                    )
-                    .values(
-                        'product_name', 
-                        'product_image_url', 
-                        'product_category_name', 
-                        'product_batch_number', 
-                        'product_unit_of_measurement', 
-                        'product_usage_name',
-                        'total_quantity'
-                    )
-                    .order_by('-total_quantity')[:10])
+    if user.is_superuser:
+        top_products = (Stock.objects
+                        .select_related('product__category', 'product__usage')
+                        .annotate(
+                            product_name=F('product__name'),
+                            product_image_url=F('product__image'),
+                            product_category_name=F('product__category__name'),
+                            product_batch_number=F('product__batch_number'),
+                            product_unit_of_measurement=F('product__unit_of_measurement'),
+                            product_usage_name=F('product__usage__name'),
+                            total_quantity=Sum('quantity')
+                        )
+                        .values(
+                            'product_name', 
+                            'product_image_url', 
+                            'product_category_name', 
+                            'product_batch_number', 
+                            'product_unit_of_measurement', 
+                            'product_usage_name',
+                            'total_quantity'
+                        )
+                        .order_by('-total_quantity')[:10])
+    else:
+        top_products = (Stock.objects
+                        .filter(warehouse__access_groups__in=user_groups)
+                        .select_related('product__category', 'product__usage')
+                        .annotate(
+                            product_name=F('product__name'),
+                            product_image_url=F('product__image'),
+                            product_category_name=F('product__category__name'),
+                            product_batch_number=F('product__batch_number'),
+                            product_unit_of_measurement=F('product__unit_of_measurement'),
+                            product_usage_name=F('product__usage__name'),
+                            total_quantity=Sum('quantity')
+                        )
+                        .values(
+                            'product_name', 
+                            'product_image_url', 
+                            'product_category_name', 
+                            'product_batch_number', 
+                            'product_unit_of_measurement', 
+                            'product_usage_name',
+                            'total_quantity'
+                        )
+                        .order_by('-total_quantity')[:10])
 
     if start_date and end_date:
         start_date = parse_date(start_date)
@@ -446,9 +479,9 @@ def index(request):
         # Admin can view all recent shipments
         recent_shipments = shipments.order_by('-date')[:10]
     else:
-        # Non-admin users only see shipments related to their groups
+        # Non-admin users only see shipments related to their groups or their own shipments
         recent_shipments = shipments.filter(
-            Q(user__groups__in=user_groups)
+            Q(user=user) | Q(user__groups__in=user_groups)
         ).distinct().order_by('-date')[:10]
 
     context = {

@@ -8,6 +8,23 @@
     <link href="{% static 'plugins/summernote/dist/summernote-lite.css' %}" rel="stylesheet" />
     <link href="{% static 'plugins/blueimp-file-upload/css/jquery.fileupload.css' %}" rel="stylesheet" />
     <link href="{% static 'plugins/tag-it/css/jquery.tagit.css' %}" rel="stylesheet" />
+    <style>
+        .full-height-row {
+            display: flex;
+            align-items: stretch;
+        }
+        .full-height-col {
+            display: flex;
+            flex-direction: column;
+        }
+        .full-width-button-container {
+            display: flex;
+            align-items: flex-end;
+        }
+        .full-width-button {
+            width: 100%;
+        }
+    </style>
 {% endblock %}
 
 {% block js %}
@@ -48,87 +65,75 @@
         </div>
     </div>
     
-    <div class="row gx-4">
-        <div class="col-lg-8">
-            <div class="card mb-4">
-                <div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
-                    Πληροφορίες Προιόντος
-                </div>
-
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                        {{ form.non_field_errors }}
-
-                <div class="card-body">
-                    <div class="mb-3">
-                        {{ form.name.errors }}
-                        <label class="form-label">Τίτλος <span class="text-danger">*</span></label>
-                        {{ form.name }} 
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row gx-4 full-height-row">
+            <div class="col-lg-8 full-height-col">
+                <div class="card mb-4 flex-grow-1">
+                    <div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
+                        Πληροφορίες Προιόντος
                     </div>
-                    <div class="mb-3">
-                        {{ form.batch_number.errors }}
-                        <label class="form-label">Αριθμός Μερίδας <span class="text-danger">*</span></label>
-                        {{ form.batch_number }} 
-                    </div>    
-
-                    <div class="">
-                        {{ form.description.errors }}
-                        <label class="form-label">Περιγραφή <span class="text-danger">*</span></label>
-                        {{ form.description }} <!-- Render the 'description' field -->
+                    <div class="card-body">
+                        <div class="mb-3">
+                            {{ form.name.errors }}
+                            <label class="form-label">Τίτλος <span class="text-danger">*</span></label>
+                            {{ form.name }} 
+                        </div>
+                        <div class="mb-3">
+                            {{ form.batch_number.errors }}
+                            <label class="form-label">Αριθμός Μερίδας <span class="text-danger">*</span></label>
+                            {{ form.batch_number }} 
+                        </div>    
+                        <div class="">
+                            {{ form.description.errors }}
+                            <label class="form-label">Περιγραφή <span class="text-danger">*</span></label>
+                            {{ form.description }} <!-- Render the 'description' field -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="card mb-4">
-                <div class="card-header d-flex align-items-center fw-400 bg-inverse bg-opacity-10">
-                    <div class="flex-1">
-                        <div>Στοιχεία Προιόντος</div>
+            <div class="col-lg-4 full-height-col">
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center fw-400 bg-inverse bg-opacity-10">
+                        <div class="flex-1">
+                            <div>Στοιχεία Προιόντος</div>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label">Μονάδα Μέτρησης</label>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Μονάδα Μέτρησης</label>
                             <div class="mb-lg-0 mb-3">
                                 {{ form.unit_of_measurement }}
                             </div>
-                    </div> 
-                    <div class="mb-3">
-                        <label class="form-label">Κατηγορία Προιόντος</label>
+                        </div> 
+                        <div class="mb-3">
+                            <label class="form-label">Κατηγορία Προιόντος</label>
                             <div class="mb-lg-0 mb-3">
                                 {{ form.category }}
                             </div>
-                    </div>
-                    <div class="mb-0">
-                        <label class="form-label">Χρήση Προιόντος</label>
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label">Χρήση Προιόντος</label>
                             <div class="mb-lg-0 mb-3">
                                 {{ form.usage }}
                             </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card-arrow">
-                    <div class="card-arrow-top-left"></div>
-                    <div class="card-arrow-top-right"></div>
-                    <div class="card-arrow-bottom-left"></div>
-                    <div class="card-arrow-bottom-right"></div>
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
+                        Φωτογραφία
+                    </div>
+                    <div class="card-body">
+                        <input type="file" id="image" name="image" class="form-control" accept="image/jpeg, image/png">
+                    </div>
                 </div>
-            </div>
-                        <div class="card mb-4">
-                <div class="card-header d-flex align-items-center bg-inverse bg-opacity-10 fw-400">
-                    Φωτογραφία
-                </div>
-                <input type="file" id="image" name="image" class="form-control" accept="image/jpeg, image/png">
-
-                <div class="card-arrow">
-                    <div class="card-arrow-top-left"></div>
-                    <div class="card-arrow-top-right"></div>
-                    <div class="card-arrow-bottom-left"></div>
-                    <div class="card-arrow-bottom-right"></div>
+                <div class="card mb-4 full-width-button-container">
+                    <div class="card-body">
+                        <button type="submit" class="btn btn-outline-theme btn-lg full-width-button">Δημιουργία Προιόντος</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <button type="submit" class="btn btn-outline-theme btn-lg">Δημιουργία Προιόντος</button>
-</form>
-
+    </form>
 {% endblock %}
