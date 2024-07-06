@@ -29,7 +29,8 @@ def sidebar_menu(request):
         'is_divider': 1
     }, {
         'text': 'Ενέργειες Προιόντων',
-        'is_header': 1
+        'is_header': 1,
+        'css_class': 'text-success fw-bold'
     }, {
         'url': reverse('DjangoHUDApp:pageProduct'),
         'icon': 'fas fa-tags',
@@ -52,7 +53,8 @@ def sidebar_menu(request):
         'is_divider': 1
     }, {
         'text': 'Ενέργιες Διακινίσεων',
-        'is_header': 1
+        'is_header': 1,
+        'css_class': 'text-success fw-bold'
     }, {
         'url': reverse('DjangoHUDApp:pageOrder'),
         'icon': 'bi bi-layout-sidebar',
@@ -75,7 +77,8 @@ def sidebar_menu(request):
         'is_divider': 1
     }, {
         'text': 'Ενέργειες Αποθηκών',
-        'is_header': 1
+        'is_header': 1,
+        'css_class': 'text-success fw-bold'
     }, {
         'url': reverse('DjangoHUDApp:pageWarehouse'),
         'icon': 'fas fa-cubes',
@@ -104,7 +107,8 @@ def sidebar_menu(request):
         'is_divider': 1
     }, {
         'text': 'Άλλες Ενέργειες',
-        'is_header': 1
+        'is_header': 1,
+        'css_class': 'text-success fw-bold'
     }, {
         'url': reverse('DjangoHUDApp:logout'),
         'icon': 'bi bi-people',

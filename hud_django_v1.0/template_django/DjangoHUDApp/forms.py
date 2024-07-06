@@ -73,8 +73,7 @@ class ShipmentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ShipmentForm, self).__init__(*args, **kwargs)
-        if 'initial' not in kwargs:
-            self.fields['date'].initial = timezone.now().strftime('%d-%m-%Y')
+        self.fields['date'].initial = timezone.now().strftime('%d-%m-%Y')
 
 class ShipmentItemForm(forms.ModelForm):
     class Meta:

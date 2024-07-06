@@ -30,23 +30,24 @@ $(document).ready(function() {
         todayBtn: true,
         showMeridian: true
     });
-    // Function to update recipient label based on shipment_type
-    function updateRecipientLabel() {
-        var shipmentType = $('#shipment_type_id').val();
-        var recipientLabel = $('label[for="id_recipient"]');
-        if (shipmentType === 'IN') {
-            recipientLabel.text('Αποστολέας');
-        } else {
-            recipientLabel.text('Παραλήπτης');
+
+    // Function to update recipient based on shipment_type
+    function updateRecipient() {
+        var shipmentType = $('#id_shipment_type').val(); // Get the internal value
+        var recipientField = $('#id_recipient');
+        var recipientValue = recipientField.find("option:contains('487ΤΔΒ')").val(); // Find the option with text '487ΤΔΒ'
+
+        if (shipmentType === 'IN' && recipientValue) {
+            recipientField.val(recipientValue); // Set value to the option value for '487ΤΔΒ'
         }
     }
 
-    // Initial call to set the correct label on page load
-    updateRecipientLabel();
+    // Initial call to set the correct recipient on page load
+    updateRecipient();
 
-    // Change event to update the label when shipment type changes
-    $('#shipment_type_id').change(function() {
-        updateRecipientLabel();
+    // Change event to update the recipient when shipment type changes
+    $('#id_shipment_type').change(function() {
+        updateRecipient();
     });
 
     $('#add-more-items').click(function() {

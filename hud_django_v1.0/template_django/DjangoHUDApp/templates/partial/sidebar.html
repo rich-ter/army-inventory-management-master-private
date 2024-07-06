@@ -6,7 +6,7 @@
     <div class="menu">
       {% for menu in sidebar_menu %} 
       {% if menu.is_header %}
-      <div class="menu-header">{{ menu.text }}</div>
+      <div class="menu-header {{ menu.css_class|default:'' }}">{{ menu.text }}</div>
       {% elif menu.is_divider %}
       <div class="menu-divider"></div>
       {% else %}
