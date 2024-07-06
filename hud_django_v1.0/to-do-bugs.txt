@@ -7,40 +7,32 @@
 -- create a custom richterlabs admin dashboard on docker to deloy all the time? 
 7. If time, then add a page for the recipients to have a list to show all recent shipemnts to that recipient.
 
-4. Admin doesn't view any products
-
 ΟΠΟΥ IN - ΠΑΡΑΛΗΠΤΗΣ ΓΕΣ
 
 ΟΤΑΝ ΕΙΣΕΡΧΟΜΕΝΗ ΑΝΤΙ ΓΙΑ ΠΑΡΑΛΗΠΤΗΣ ΑΠΟΣΤΟΛΕΑΣ
 
 MAKE SURE USERS CAN SEARCH FOR EVEN HALF THE NAME AND TO GET RESPONSES ON THE GO INSTEAD OF AFTER CLICKING THE SEARCH BUTTON.
 
-
-ΦΙΛΤΡΟ ΗΜΕΡΟΜΗΝΙΩΝ ΣΤΗΝ ΑΡΧΙΚΗ ΝΑ ΔΟΥΛΕΥΕΙ
-
-ΗΜΕΡΟΜΗΝΙΑ ΣΤΗΝ ΔΗΜΙΟΥΡΓΙΑ ΔΙΑΚΙΝΗΣΗΣ ΝΑ ΜΠΟΡΕΙ ΝΑ ΤΗΝ ΒΑΛΕΙ ΚΑΠΟΙΟΣ ΜΙΑ ΣΥΓΚΕΚΡΙΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΑΛΛΑ ΤΟ DEFAULT ΝΑ ΕΙΝΑΙ ΤΟ ΣΗΜΕΡΙΝΟ.
-- DONE 
-
-DATE FOR THE SHIPMENTS TO BE IN THE EUROPE FORMAT
-- DONE
-
-PRINT BUTTON TO AUTOMATICALLY PRINT
-
-issue with the date selection
-
 PREVENT CREATING ORDER WITH 0 PRODUCTS
-
+make the 487 image more prominent
 IN THE SHIPMENT TO ADD A diatagi field and a month dropdown
 
 when we click on one warehouse it shows all of them as currently open in the navigation selection. they seem all toggled.
-
 
 remove all my logo branding etc. 
 make my pernal branch before that and add the mock products.
 
 
-
 ------ DONE ------ 
+PRINT BUTTON TO AUTOMATICALLY PRINT
+ΗΜΕΡΟΜΗΝΙΑ ΣΤΗΝ ΔΗΜΙΟΥΡΓΙΑ ΔΙΑΚΙΝΗΣΗΣ ΝΑ ΜΠΟΡΕΙ ΝΑ ΤΗΝ ΒΑΛΕΙ ΚΑΠΟΙΟΣ ΜΙΑ ΣΥΓΚΕΚΡΙΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΑΛΛΑ ΤΟ DEFAULT ΝΑ ΕΙΝΑΙ ΤΟ ΣΗΜΕΡΙΝΟ.
+DATE FOR THE SHIPMENTS TO BE IN THE EUROPE FORMAT
+issue with the date selection
+4. Admin doesn't view any products
+ΦΙΛΤΡΟ ΗΜΕΡΟΜΗΝΙΩΝ ΣΤΗΝ ΑΡΧΙΚΗ ΝΑ ΔΟΥΛΕΥΕΙ
+
+admin to be able to view all shipments that were made. 
+
 
 - fix urls appending instead of absolute paths.
 8. DEFAULT OPTION TO BE ΚΑΜΙΑ ΕΠΙΛΟΓΗ when creating a product.

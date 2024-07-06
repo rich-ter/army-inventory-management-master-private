@@ -6,124 +6,118 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block css %}
-    <link href="{% static 'plugins/jvectormap-next/jquery-jvectormap.css' %}" rel="stylesheet" />
-    <link href="{% static 'plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet" />
-    <style>
-        .datepicker {
-            z-index: 1151 !important;
-        }
-    </style>
+<link href="{% static 'plugins/jvectormap-next/jquery-jvectormap.css' %}" rel="stylesheet" />
+<link href="{% static 'plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet" />
+<style>
+    .center-button-container {
+        display: flex;
+        justify-content: center;
+    }
+    .errorlist {
+        color: red;
+        margin-top: 5px;
+    }
+    .datepicker {
+        z-index: 1151 !important;
+    }
+</style>
 {% endblock %}
 
 {% block js %}
-	<script src="{% static 'plugins/jvectormap-next/jquery-jvectormap.min.js' %}"></script>
-	<script src="{% static 'plugins/jvectormap-content/world-mill.js' %}"></script>
-	<script src="{% static 'plugins/chart.js/dist/chart.umd.js' %}"/></script>
+<script src="{% static 'plugins/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'plugins/jvectormap-next/jquery-jvectormap.min.js' %}"></script>
+<script src="{% static 'plugins/jvectormap-content/world-mill.js' %}"></script>
+<script src="{% static 'plugins/chart.js/dist/chart.umd.js' %}"></script>
+<script src="{% static 'plugins/apexcharts/dist/apexcharts.min.js' %}"></script>
+<script src="{% static 'js/demo/dashboard.demo.js' %}"></script>
+<script>
+$(document).ready(function() {
+    // Initialize datepicker with correct format
+    $('.datepicker').datepicker({
+        format: 'dd-mm-yyyy', // Set date format
+        autoclose: true,
+        todayHighlight: true,
+        todayBtn: true,
+        showMeridian: true
+    }).on('changeDate', function(e) {
+        $(this).datepicker('hide');
+    });
 
-	<script src="{% static 'plugins/apexcharts/dist/apexcharts.min.js' %}"></script>
-	<script src="{% static 'js/demo/dashboard.demo.js' %}"></script>
+    // Additional JS code for charts
+    var ctx = document.getElementById('lineChart');
+    var lineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                color: app.color.theme,
+                borderColor: app.color.theme,
+                borderWidth: 1.5,
+                pointBackgroundColor: app.color.theme,
+                pointBorderWidth: 1.5,
+                pointRadius: 4,
+                pointHoverBackgroundColor: app.color.theme,
+                pointHoverBorderColor: app.color.theme,
+                pointHoverRadius: 7,
+                label: 'Total Sales',
+                data: [12, 19, 4, 5, 2, 3]
+            }]
+        }
+    });
 
-    <script>
-        $(document).ready(function() {
-            $('.datepicker').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true,
-                orientation: 'bottom'
-            }).on('changeDate', function(e) {
-                $(this).datepicker('hide');
-            });
-        });
-    </script>
-	<!-- script -->
-    <script>
-        $(document).ready(function() {
-            $('.datepicker').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true,
-                orientation: 'bottom'
-            }).on('changeDate', function(e) {
-                $(this).datepicker('hide');
-            });
-
-            var apexRadarChartOptions = {
-                chart: {
-                    height: 320,
-                    type: 'radar',
-                },
-                series: [
-                    { name: 'Series 1', data: [20, 100, 40, 30, 50, 80, 33] }
-                ],
-                labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-                plotOptions: {
-                    radar: {
-                        size: 140,
-                        polygons: {
-                            strokeColors: '#e9e9e9',
-                            strokeWidth: 1,
-                            connectorColors: '#e9e9e9',
-                            fill: {
-                                colors: ['rgba(255, 255, 255, .05)', 'rgba(255, 255, 255, .05)']
-                            }
-                        }
-                    }
-                },
-                colors: ['#FF4560'],
-                markers: {
-                    size: 4,
-                    colors: ['#FF4560'],
-                    strokeColor: '#FF4560',
-                    strokeWidth: 2,
-                },
-                tooltip: {
-                    y: { formatter: function(val) { return val } }
-                },
-                yaxis: {
-                    tickAmount: 7,
-                    labels: {
-                        formatter: function(val, i) {
-                            return (i % 2 === 0) ? val : '';
-                        }
+    var apexRadarChartOptions = {
+        chart: {
+            height: 320,
+            type: 'radar',
+        },
+        series: [
+            { name: 'Series 1', data: [20, 100, 40, 30, 50, 80, 33] }
+        ],
+        labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        plotOptions: {
+            radar: {
+                size: 140,
+                polygons: {
+                    strokeColors: '#e9e9e9',
+                    strokeWidth: 1,
+                    connectorColors: '#e9e9e9',
+                    fill: {
+                        colors: ['rgba(255, 255, 255, .05)', 'rgba(255, 255, 255, .05)']
                     }
                 }
             }
-            var apexRadarChart = new ApexCharts(
-                document.querySelector('#apexRadarChart'),
-                apexRadarChartOptions
-            );
-            apexRadarChart.render();
-        });
-    </script>
-	<!-- script -->
-<script>
-  var ctx = document.getElementById('lineChart');
-  var lineChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-      datasets: [{
-        color: app.color.theme,
-        borderColor: app.color.theme,
-        borderWidth: 1.5,
-        pointBackgroundColor: app.color.theme,
-        pointBorderWidth: 1.5,
-        pointRadius: 4,
-        pointHoverBackgroundColor: app.color.theme,
-        pointHoverBorderColor: app.color.theme,
-        pointHoverRadius: 7,
-        label: 'Total Sales',
-        data: [12, 19, 4, 5, 2, 3]
-      }]
+        },
+        colors: ['#FF4560'],
+        markers: {
+            size: 4,
+            colors: ['#FF4560'],
+            strokeColor: '#FF4560',
+            strokeWidth: 2,
+        },
+        tooltip: {
+            y: { formatter: function(val) { return val } }
+        },
+        yaxis: {
+            tickAmount: 7,
+            labels: {
+                formatter: function(val, i) {
+                    return (i % 2 === 0) ? val : '';
+                }
+            }
+        }
     }
-  });
+    var apexRadarChart = new ApexCharts(
+        document.querySelector('#apexRadarChart'),
+        apexRadarChartOptions
+    );
+    apexRadarChart.render();
+});
 </script>
 {% endblock %}
 
 {% block content %}
-
-
-     <form method="get" class="form-inline mb-3 d-flex justify-content-center align-items-center">
+    <form method="get" class="form-inline mb-3 d-flex justify-content-center align-items-center">
         <div class="row align-items-center mb-3 w-75 mx-auto">
             <!-- Start Date -->
             <div class="col-md-3 mb-2">
@@ -152,7 +146,6 @@
         </div>
     </form>
 
-
 	<!-- BEGIN row -->
 	<div class="row">
 		<!-- BEGIN col-3 -->
@@ -164,7 +157,7 @@
 					<!-- BEGIN title -->
 					<div class="d-flex fw-bold small mb-3">
 						<span class="flex-grow-1">ΠΡΟΙΟΝΤΑ</span>
-						<a href="#" data-toggle="card-expand" class="text-inverse text-opacity-50 text-decoration-none"><i class="bi bi-fullscreen"></i></a>
+						{% comment %} <a href="#" data-toggle="card-expand" class="text-inverse text-opacity-50 text-decoration-none"><i class="bi bi-fullscreen"></i></a> {% endcomment %}
 					</div>
 					<!-- END title -->
 					<!-- BEGIN stat-lg -->
@@ -173,7 +166,7 @@
 							<h3 class="mb-0">{{total_products}}</h3>
 						</div>
 						<div class="col-5">
-							<div class="mt-n2" data-render="apexchart" data-type="bar" data-title="Visitors" data-height="30"></div>
+							{% comment %} <div class="mt-n2" data-render="apexchart" data-type="bar" data-title="Visitors" data-height="30"></div> {% endcomment %}
 						</div>
 					</div>
 					<!-- END stat-lg -->
@@ -203,7 +196,7 @@
 					<!-- BEGIN title -->
 					<div class="d-flex fw-bold small mb-3">
 						<span class="flex-grow-1">ΑΠΟΣΤΟΛΕΣ</span>
-						<a href="#" data-toggle="card-expand" class="text-inverse text-opacity-50 text-decoration-none"><i class="bi bi-fullscreen"></i></a>
+						{% comment %} <a href="#" data-toggle="card-expand" class="text-inverse text-opacity-50 text-decoration-none"><i class="bi bi-fullscreen"></i></a> {% endcomment %}
 					</div>
 					<!-- END title -->
 					<!-- BEGIN stat-lg -->
@@ -212,7 +205,7 @@
 							<h3 class="mb-0">{{total_shipments}}</h3>
 						</div>
 						<div class="col-5">
-							<div class="mt-n2" data-render="apexchart" data-type="line" data-title="Visitors" data-height="30"></div>
+							{% comment %} <div class="mt-n2" data-render="apexchart" data-type="line" data-title="Visitors" data-height="30"></div> {% endcomment %}
 						</div>
 					</div>
 					<!-- END stat-lg -->
@@ -457,7 +450,7 @@
 									</td>
 									<td>
 										<table class="mb-2">
-											<tr>
+											<tr> 
 												<td class="pe-3">ΑΠΟΘΕΜΑ:</td>
 												<td class="text-inverse text-opacity-75 fw-500">{{product.total_quantity}}</td>
 											</tr>
@@ -554,6 +547,3 @@
 	</div>
 	<!-- END row -->
 {% endblock %}
-
-<!-- html -->
-

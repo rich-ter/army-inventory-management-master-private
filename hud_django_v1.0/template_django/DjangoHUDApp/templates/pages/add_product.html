@@ -18,6 +18,7 @@
             flex-direction: column;
         }
         .full-width-button-container {
+            flex-grow: 1;
             display: flex;
             align-items: flex-end;
         }
@@ -84,7 +85,7 @@
                             <label class="form-label">Αριθμός Μερίδας <span class="text-danger">*</span></label>
                             {{ form.batch_number }} 
                         </div>    
-                        <div class="">
+                        <div class="mb-3">
                             {{ form.description.errors }}
                             <label class="form-label">Περιγραφή <span class="text-danger">*</span></label>
                             {{ form.description }} <!-- Render the 'description' field -->
@@ -128,10 +129,8 @@
                         <input type="file" id="image" name="image" class="form-control" accept="image/jpeg, image/png">
                     </div>
                 </div>
-                <div class="card mb-4 full-width-button-container">
-                    <div class="card-body">
-                        <button type="submit" class="btn btn-outline-theme btn-lg full-width-button">Δημιουργία Προιόντος</button>
-                    </div>
+                <div class="full-width-button-container">
+                    <button type="submit" class="btn btn-outline-theme btn-lg full-width-button">Δημιουργία Προιόντος</button>
                 </div>
             </div>
         </div>

@@ -258,38 +258,39 @@ def pageDataManagement(request):
         # Strip whitespace from column names to avoid KeyError
         df.columns = df.columns.str.strip()
 
-        # Print columns for debugging after stripping
-        print("DataFrame columns after stripping:", df.columns)
-
         # Fill NaN values with empty strings to avoid errors
         df.fillna('', inplace=True)
 
-        # Check for required columns and print a warning if any are missing
         required_columns = ['Προιόν', 'Κατηγορία', 'Χρήση', 'Μερίδα', 'Απ. ΤΑΓΜΑ', 'Απ. ΚΕΠΙΚ', 'Απ. ΔΟΡΥΦΟΡΙΚΑ']
         missing_columns = [col for col in required_columns if col not in df.columns]
         if missing_columns:
-            print(f"Missing columns: {missing_columns}")
             return HttpResponse(f"Missing columns in the uploaded file: {', '.join(missing_columns)}", status=400)
 
-        # Process the DataFrame to update Products and Stocks
+        # Cache categories and usages to reduce queries
+        categories = {cat.name: cat for cat in ProductCategory.objects.all()}
+        usages = {use.name: use for use in ProductUsage.objects.all()}
+
+        products_to_create = []
+        stocks_to_create = []
+
         for index, row in df.iterrows():
             product_name = str(row['Προιόν']).strip()
             category_name = str(row['Κατηγορία']).strip()
             usage_name = str(row['Χρήση']).strip()
             batch_number = str(row['Μερίδα']).strip()
-            # total_stock = row['Συνολικό Απόθεμα']
             stock_tagma = row['Απ. ΤΑΓΜΑ']
             stock_kepik = row['Απ. ΚΕΠΙΚ']
             stock_doriforika = row['Απ. ΔΟΡΥΦΟΡΙΚΑ']
 
-            category, _ = ProductCategory.objects.get_or_create(name=category_name)
-            usage, _ = ProductUsage.objects.get_or_create(name=usage_name)
+            category = categories.get(category_name) or ProductCategory.objects.create(name=category_name)
+            categories[category_name] = category
+            usage = usages.get(usage_name) or ProductUsage.objects.create(name=usage_name)
+            usages[usage_name] = usage
 
             product, created = Product.objects.get_or_create(
                 name=product_name,
                 defaults={'category': category, 'usage': usage, 'batch_number': batch_number}
             )
-
             if not created:
                 product.category = category
                 product.usage = usage
@@ -304,9 +305,16 @@ def pageDataManagement(request):
 
             for warehouse_name, quantity in warehouses.items():
                 warehouse, _ = Warehouse.objects.get_or_create(name=warehouse_name)
-                stock, _ = Stock.objects.get_or_create(product=product, warehouse=warehouse)
-                stock.quantity = quantity
-                stock.save()
+                stock, created = Stock.objects.get_or_create(product=product, warehouse=warehouse)
+                if not created:
+                    stock.quantity = quantity
+                    stock.save()
+                else:
+                    stocks_to_create.append(stock)
+
+        # Bulk create new stocks
+        if stocks_to_create:
+            Stock.objects.bulk_create(stocks_to_create)
 
         return redirect('DjangoHUDApp:pageDataManagement')
 
@@ -462,8 +470,8 @@ def index(request):
                         .order_by('-total_quantity')[:10])
 
     if start_date and end_date:
-        start_date = parse_date(start_date)
-        end_date = parse_date(end_date)
+        start_date = parse_date('-'.join(start_date.split('-')[::-1]))  # Reformat date to YYYY-MM-DD
+        end_date = parse_date('-'.join(end_date.split('-')[::-1]))  # Reformat date to YYYY-MM-DD
         if start_date and end_date:
             # Adjust the end_date to include the whole day
             end_date += timedelta(days=1)
@@ -475,11 +483,10 @@ def index(request):
     # Calculate total stock
     total_stock = stocks.aggregate(total_quantity=Sum('quantity'))['total_quantity']
 
+    # For admin, show all shipments. For non-admin, filter shipments related to their groups or their own shipments.
     if user.is_superuser:
-        # Admin can view all recent shipments
         recent_shipments = shipments.order_by('-date')[:10]
     else:
-        # Non-admin users only see shipments related to their groups or their own shipments
         recent_shipments = shipments.filter(
             Q(user=user) | Q(user__groups__in=user_groups)
         ).distinct().order_by('-date')[:10]
@@ -488,14 +495,13 @@ def index(request):
         'top_products': top_products,
         'total_products': total_products,
         'total_shipments_sent': total_shipments_sent,
-        'start_date': start_date,
-        'end_date': end_date,
+        'start_date': request.GET.get('start_date'),
+        'end_date': request.GET.get('end_date'),
         'total_shipments': total_shipments,
         'total_stock': total_stock,
         'recent_shipments': recent_shipments,
     }
     return render(request, 'pages/index.html', context)
-
 def pageOrderDetails(request, shipment_id):
     shipment = get_object_or_404(Shipment, pk=shipment_id)
     shipment_items = ShipmentItem.objects.filter(shipment=shipment)

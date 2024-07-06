@@ -18,7 +18,7 @@ class LoginForm(forms.Form):
 class ProductForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Όνομα Υλικού'}))
     batch_number = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Αριθμός Μερίδας Υλικού'}), required=False)
-    description = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'rows': 6}), required=False)
+    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}), required=False)
     category = forms.ModelChoiceField(queryset=ProductCategory.objects.all(), required=False, widget=forms.Select(attrs={'class': 'form-select'}))
     usage = forms.ModelChoiceField(queryset=ProductUsage.objects.all(), required=False, widget=forms.Select(attrs={'class': 'form-select'}))
     unit_of_measurement = forms.ChoiceField(choices=Product.MEASUREMENT_TYPES, widget=forms.Select(attrs={'class': 'form-select'}), required=False)
