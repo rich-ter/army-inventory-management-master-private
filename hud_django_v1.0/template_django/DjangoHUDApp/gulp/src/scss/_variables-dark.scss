@@ -120,22 +120,88 @@ $dark-border-subtle-dark:                       $gray-800 !default;
 
 // 02. Body setting
 
-$body-font-weight-dark:                         300 !default;
-$body-letter-spacing-dark:                      rem(.75px) !default;
-$body-bg-dark:                                  #1d2835 !default;
-$body-bg-gradient-dark:                         linear-gradient(180deg, rgba(50,70,80,.9) 0%, rgba(13,16,27,1) 100%) !default;
-$body-bg-cover-dark:                            url('images/cover-dark.jpg') !default;
-$body-bg-image-dark:                            url('images/pattern-dark.png') !default;
-$body-bg-image-size-dark:                       rem(75px) !default;
-$body-color-dark:                               rgba($white, .75) !default;
-$body-emphasis-color-dark:                      $gray-100 !default;
-$body-secondary-color-dark:                     rgba($body-color-dark, .75) !default;
-$body-secondary-bg-dark:                        $gray-800 !default;
-$body-tertiary-color-dark:                      rgba($body-color-dark, .5) !default;
-$body-tertiary-bg-dark:                         rgba($body-color, .1) !default;
-$emphasis-color-dark:                           $white !default;
+// 02. Body setting
 
+// 02. Body setting
 
+// 02. Body setting
+
+// 02. Body setting
+
+$body-font-weight-dark: 300 !default;
+$body-letter-spacing-dark: rem(.75px) !default;
+$body-bg-dark: #1d2835 !default;
+$body-bg-gradient-dark: linear-gradient(180deg, rgba(50,70,80,.9) 0%, rgba(13,16,27,.7) 100%) !default;
+$body-bg-cover-dark: url('images/cover-dark.jpg') !default;
+$body-bg-image-dark: url('images/pattern-dark.png') !default;
+$body-bg-image-size-dark: rem(75px) !default;
+$body-color-dark: rgba($white, .9) !default;
+$body-emphasis-color-dark: $gray-100 !default;
+$body-secondary-color-dark: rgba($body-color-dark, .85) !default;
+$body-secondary-bg-dark: $gray-800 !default;
+$body-tertiary-color-dark: rgba($body-color-dark, .65) !default;
+$body-tertiary-bg-dark: rgba($body-color, .15) !default;
+$emphasis-color-dark: $white !default;
+
+body {
+  position: relative;
+  color: var(--#{$prefix}body-color-dark);
+  background-color: $body-bg-dark; // Ensure the background color is applied to the whole body
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+  color: var(--#{$prefix}body-color-dark);
+  background: linear-gradient(180deg, rgba(50,70,80,.7) 0%, rgba(13,16,27,.7) 100%), url('images/cover-dark.jpg') center/cover no-repeat;
+  padding-top: $app-header-height; // Ensure the content starts after the header
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); // Semi-transparent black overlay
+    z-index: -1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); // Add text shadow for headings
+  }
+}
+
+// body {
+// 	position: relative;
+// 	color: var(--#{$prefix}body-color-dark);
+// 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); // Add text shadow for better readability
+
+// 	&::before {
+// 		content: "";
+// 		position: absolute;
+// 		top: 0;
+// 		left: 0;
+// 		width: 100%;
+// 		height: 100%;
+// 		background: rgba(0, 0, 0, 0.5); // Semi-transparent black overlay
+// 		z-index: 1;
+// 	}
+
+// 	& .content {
+// 		position: relative;
+// 		z-index: 2;
+// 	}
+
+// 	h1,
+// 	h2,
+// 	h3,
+// 	h4,
+// 	h5,
+// 	h6 {
+// 		text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); // Add text shadow for headings
+// 	}
+// }
 
 // 03. Font & headings settings
 
@@ -162,11 +228,12 @@ $component-color-dark:                          $body-color-dark !default;
 
 // 06. App - Header settings
 
-$app-header-bg-dark:                            rgba(29, 40, 53, .95) !default;
-$app-header-brand-img-dark:                     url('images/logo-dark.png') !default;
-$app-header-link-color-dark:                    $white !default;
-$app-header-link-hover-color-dark:              rgba($white, .5) !default;
-$app-header-scroll-box-shadow-dark:             null !default;
+$app-header-bg-dark: rgba(29, 40, 53, .95) !default;
+$app-header-brand-img-dark: url('images/favicon.png') !default;
+$app-header-second-img-dark: url('images/favicon.png') !default; // Add this line
+$app-header-link-color-dark: $white !default;
+$app-header-link-hover-color-dark: rgba($white, .5) !default;
+$app-header-scroll-box-shadow-dark: null !default;
 
 
 

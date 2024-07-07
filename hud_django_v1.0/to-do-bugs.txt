@@ -4,6 +4,7 @@
 4. make sure search filters visible to all 
 change the debug to false to ensure production enviroment 
 fix console errors
+in  all orders page the date picker should be the same as in the home and the create shipment
 7. If time, then add a page for the recipients to have a list to show all recent shipemnts to that recipient.
 ΟΠΟΥ IN - ΠΑΡΑΛΗΠΤΗΣ ΓΕΣ || ΟΤΑΝ ΕΙΣΕΡΧΟΜΕΝΗ ΑΝΤΙ ΓΙΑ ΠΑΡΑΛΗΠΤΗΣ ΑΠΟΣΤΟΛΕΑΣ
 MAKE SURE USERS CAN SEARCH FOR EVEN HALF THE NAME AND TO GET RESPONSES ON THE GO INSTEAD OF AFTER CLICKING THE SEARCH BUTTON.

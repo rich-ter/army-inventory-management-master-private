@@ -10,12 +10,35 @@ class Command(BaseCommand):
         group_dides, _ = Group.objects.get_or_create(name='ΔΙΔΕΣ')
         group_doriforika, _ = Group.objects.get_or_create(name='ΔΟΡΥΦΟΡΙΚΑ')
         
-        # Define user data
         user_data = [
-            {'username': 'alexandris', 'password': 'alexandris', 'group': group_doriforika},
-            {'username': 'tsaprounis', 'password': 'tsaprounis', 'group': group_dides},
-            {'username': 'nikolaidis', 'password': 'nikolaidis', 'group': group_dides},
-            {'username': 'raftogiannis', 'password': 'raftogiannis', 'group': group_dides},
+            {
+                'username': 'alexandris',
+                'password': 'alexandris',
+                'first_name': '[ΤΓΧΗΣ]',
+                'last_name': 'ΑΛΕΞΑΝΔΡΗΣ',
+                'group': group_doriforika
+            },
+            {
+                'username': 'tsaprounis',
+                'password': 'tsaprounis',
+                'first_name': '[ΛΓΟΣ]',
+                'last_name': 'ΤΣΑΠΡΟΥΝΗΣ',
+                'group': group_dides
+            },
+            {
+                'username': 'nikolaidis',
+                'password': 'nikolaidis',
+                'first_name': '[ΥΠΛΓΟΣ]',
+                'last_name': 'ΝΙΚΟΛΑΙΔΗΣ',
+                'group': group_dides
+            },
+            {
+                'username': 'raftogiannis',
+                'password': 'raftogiannis',
+                'first_name': '[ΛΟΧ]',
+                'last_name': 'ΡΑΥΤΟΓΙΑΝΝΗΣ',
+                'group': group_dides
+            },
         ]
 
         warehouses_data = [
@@ -24,17 +47,18 @@ class Command(BaseCommand):
             {'name': 'ΔΟΡΥΦΟΡΙΚΑ', 'description': 'Αποθήκη Δορυφορικών / 2ού Λόχου', 'access_groups': [group_doriforika]},
         ]
 
-        # Create users and assign to groups
+        # Create users and assign them to groups
         for user_info in user_data:
             user, created = User.objects.get_or_create(username=user_info['username'])
             if created:
                 user.set_password(user_info['password'])
+                user.first_name = user_info['first_name']
+                user.last_name = user_info['last_name']
                 user.save()
-                user.groups.add(user_info['group'])
-                self.stdout.write(self.style.SUCCESS(f'Successfully created user {user.username} and added to {user_info["group"].name}'))
+                self.stdout.write(self.style.SUCCESS(f"User {user_info['username']} created successfully"))
             else:
-                self.stdout.write(self.style.WARNING(f'User {user.username} already exists'))
-        
+                self.stdout.write(self.style.WARNING(f"User {user_info['username']} already exists"))
+    
         # Create warehouses and assign to groups
         for warehouse_data in warehouses_data:
             warehouse, created = Warehouse.objects.get_or_create(

@@ -1,18 +1,32 @@
+{% load static %}
+
 <div id="header" class="app-header">
   {% if appSidebarHide is None %}
-  {% endif %} {% if appTopNav is not None and appSidebarHide %} {% endif %}
+  {% endif %}
+  {% if appTopNav is not None and appSidebarHide %}
+  {% endif %}
   <div class="brand">
     <a href="/index" class="brand-logo">
       <span class="brand-img">
-        <span class="brand-img-text text-theme"></span>
+        <img src="{% static 'img/favicon.png' %}" alt="Logo" style="width: 26px; height: 26px;">
+      </span>
+      <!-- Add the second image here -->
+      <span class="second-img">
+        <img src="{% static 'img/greek-army-logo.png' %}" alt="Second Logo" style="width: 26px; height: 26px;">
       </span>
       <span class="brand-text"> ΣΔΑ 'ΡΙΧΤΕΡ'</span>
     </a>
   </div>
   <div class="menu">
     <div class="menu-item dropdown dropdown-mobile-full">
-        <div class="menu-text d-sm-block d-none w-170px text-success fw-bold">
-          {{ user.username }}
+        <div class="menu-text d-sm-block d-none text-success fw-bold user-name-container">
+          <span class="user-name">
+            {% if user.first_name and user.last_name %}
+              {{ user.first_name }} {{ user.last_name }}
+            {% else %}
+              {{ user.username }}
+            {% endif %}
+          </span>
         </div>
     </div>
   </div>
