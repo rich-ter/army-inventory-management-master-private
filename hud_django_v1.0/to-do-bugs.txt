@@ -2,19 +2,21 @@
 1. Make sure that the stock-per-warehouse filters are working properly. 
 2. MAKE SURE ABOUT CRUD OPERATIONS ABOUT SHIPMENTS AND PRODUCTS
 4. make sure search filters visible to all 
-change the debug to false to ensure production enviroment 
+change the debug to false to ensure production enviroment
+make the admin name not having any issues.
+
 fix console errors
 in  all orders page the date picker should be the same as in the home and the create shipment
 7. If time, then add a page for the recipients to have a list to show all recent shipemnts to that recipient.
 ΟΠΟΥ IN - ΠΑΡΑΛΗΠΤΗΣ ΓΕΣ || ΟΤΑΝ ΕΙΣΕΡΧΟΜΕΝΗ ΑΝΤΙ ΓΙΑ ΠΑΡΑΛΗΠΤΗΣ ΑΠΟΣΤΟΛΕΑΣ
 MAKE SURE USERS CAN SEARCH FOR EVEN HALF THE NAME AND TO GET RESPONSES ON THE GO INSTEAD OF AFTER CLICKING THE SEARCH BUTTON.
-make the 487 image more prominent
-when we click on one warehouse it shows all of them as currently open in the navigation selection. they seem all toggled.
 clean unused files
 remove all my logo branding etc.  make my pernal branch before that and add the mock products.
 remove dormant scripts and loaders in each of the pages. for example apex charts etc. 
 
 ------ DONE ------ 
+when we click on one warehouse it shows all of them as currently open in the navigation selection. they seem all toggled.
+make the 487 image more prominent
 addedd favicon
 fix apothema in lista proionton
 PRINT BUTTON TO AUTOMATICALLY PRINT

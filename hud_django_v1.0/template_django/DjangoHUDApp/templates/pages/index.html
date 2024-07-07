@@ -429,17 +429,16 @@ $(document).ready(function() {
 									<td>
 										<div class="d-flex">
 											<div class="position-relative mb-2">
-    {% comment %} {% if product.product_image %}
-        <a href="{{ product.product_image.url }}" data-lightbox="product-{{ product.id }}" data-title="{{ product.product_name }}">
-            <img alt="{{ product.product_name }}" class="mw-100 mh-100 w-80px h-60px" src="{{ product.product_image.url }}">
-        </a>
-    {% else %}
-        <img alt="" class="mw-100 mh-100 w-80px h-60px" src="{% static 'img/dashboard/product-1.jpeg' %}">
-    {% endif %} {% endcomment %}
-
-												{% comment %} <div class="position-absolute top-0 start-0">
+											{% comment %} {% if product.product_image %}
+												<a href="{{ product.product_image.url }}" data-lightbox="product-{{ product.id }}" data-title="{{ product.product_name }}">
+													<img alt="{{ product.product_name }}" class="mw-100 mh-100 w-80px h-60px" src="{{ product.product_image.url }}">
+												</a>
+											{% else %}
+												<img alt="" class="mw-100 mh-100 w-80px h-60px" src="{% static 'img/default-image.svg' %}">
+											{% endif %} 
+												<div class="position-absolute top-0 start-0">
 													<span class="badge bg-theme text-theme-900 rounded-0 d-flex align-items-center justify-content-center w-20px h-20px">1</span>
-												</div> {% endcomment %}
+												</div>  {% endcomment %}
 											</div>
 											<div class="flex-1 ps-3">
 												<div class="mb-1"><small class="fs-9px fw-500 lh-1 d-inline-block rounded-0 badge bg-secondary bg-opacity-25 text-inverse text-opacity-75 pt-5px">ΑΜ: {{product.product_batch_number}}</small></div>
