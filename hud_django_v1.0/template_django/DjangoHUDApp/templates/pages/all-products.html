@@ -25,12 +25,6 @@
     <!-- Include the filter form -->
     {% render_product_filter_form filter %}
     <div class="card">
-        {% comment %} <ul class="nav nav-tabs nav-tabs-v2 px-4">
-            <li class="nav-item me-3"><a href="#allTab" class="nav-link active px-2" data-bs-toggle="tab">All</a></li>
-            <li class="nav-item me-3"><a href="#publishedTab" class="nav-link px-2" data-bs-toggle="tab">Published</a></li>
-            <li class="nav-item me-3"><a href="#expiredTab" class="nav-link px-2" data-bs-toggle="tab">Expired</a></li>
-            <li class="nav-item me-3"><a href="#deletedTab" class="nav-link px-2" data-bs-toggle="tab">Deleted</a></li>
-        </ul> {% endcomment %}
         <div class="tab-content p-4">
             <div class="tab-pane fade show active" id="allTab">
 
@@ -65,7 +59,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="align-middle">{{ product.stock }}</td> <!-- Assuming you have a stock field -->
+                                    <td class="align-middle">{{ product.total_stock }}</td> <!-- Display total stock -->
                                     <td class="align-middle">{{ product.category }}</td>
                                     <td class="align-middle">{{ product.usage }}</td>
                                     <td class="align-middle">

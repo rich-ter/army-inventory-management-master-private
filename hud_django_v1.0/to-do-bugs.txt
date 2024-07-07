@@ -1,25 +1,24 @@
 ------ THINGS LEFT TO FINISH ------ 
-
 1. Make sure that the stock-per-warehouse filters are working properly. 
 2. MAKE SURE ABOUT CRUD OPERATIONS ABOUT SHIPMENTS AND PRODUCTS
-3. Make sure that in dashboards users can only see what their target group created.
-
--- create a custom richterlabs admin dashboard on docker to deloy all the time? 
+4. make sure search filters visible to all 
+change the debug to false to ensure production enviroment 
+fix console errors
 7. If time, then add a page for the recipients to have a list to show all recent shipemnts to that recipient.
-ΟΠΟΥ IN - ΠΑΡΑΛΗΠΤΗΣ ΓΕΣ
-ΟΤΑΝ ΕΙΣΕΡΧΟΜΕΝΗ ΑΝΤΙ ΓΙΑ ΠΑΡΑΛΗΠΤΗΣ ΑΠΟΣΤΟΛΕΑΣ
+ΟΠΟΥ IN - ΠΑΡΑΛΗΠΤΗΣ ΓΕΣ || ΟΤΑΝ ΕΙΣΕΡΧΟΜΕΝΗ ΑΝΤΙ ΓΙΑ ΠΑΡΑΛΗΠΤΗΣ ΑΠΟΣΤΟΛΕΑΣ
 MAKE SURE USERS CAN SEARCH FOR EVEN HALF THE NAME AND TO GET RESPONSES ON THE GO INSTEAD OF AFTER CLICKING THE SEARCH BUTTON.
-PREVENT CREATING ORDER WITH 0 PRODUCTS
 make the 487 image more prominent
-IN THE SHIPMENT TO ADD A diatagi field and a month dropdown
 when we click on one warehouse it shows all of them as currently open in the navigation selection. they seem all toggled.
 clean unused files
-remove all my logo branding etc. 
-make my pernal branch before that and add the mock products.
+remove all my logo branding etc.  make my pernal branch before that and add the mock products.
 remove dormant scripts and loaders in each of the pages. for example apex charts etc. 
 
 ------ DONE ------ 
+addedd favicon
+fix apothema in lista proionton
 PRINT BUTTON TO AUTOMATICALLY PRINT
+IN THE SHIPMENT TO ADD A diatagi field and a month dropdown
+PREVENT CREATING ORDER WITH 0 PRODUCTS
 ΗΜΕΡΟΜΗΝΙΑ ΣΤΗΝ ΔΗΜΙΟΥΡΓΙΑ ΔΙΑΚΙΝΗΣΗΣ ΝΑ ΜΠΟΡΕΙ ΝΑ ΤΗΝ ΒΑΛΕΙ ΚΑΠΟΙΟΣ ΜΙΑ ΣΥΓΚΕΚΡΙΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΑΛΛΑ ΤΟ DEFAULT ΝΑ ΕΙΝΑΙ ΤΟ ΣΗΜΕΡΙΝΟ.
 DATE FOR THE SHIPMENTS TO BE IN THE EUROPE FORMAT
 issue with the date selection
@@ -27,6 +26,7 @@ issue with the date selection
 ΦΙΛΤΡΟ ΗΜΕΡΟΜΗΝΙΩΝ ΣΤΗΝ ΑΡΧΙΚΗ ΝΑ ΔΟΥΛΕΥΕΙ
 
 admin to be able to view all shipments that were made. 
+3. Make sure that in dashboards users can only see what their target group created.
 
 
 - fix urls appending instead of absolute paths.
@@ -76,4 +76,6 @@ Customize admin dashboard to be able to search product names.
 SIMIOSEIS:
 
 SIMANTIKO OTI PROFANOS AN STILOUME MIA APOSTOLI GIA PARELTHONTIKO XRONO H MELLONTIKO, TO STOCK THA EXEI PROVLIMATA.
+
+AN THELEI O ALEXANDRIS NA FTIAKSEI KATIGORIA, DEN BOREI.
 

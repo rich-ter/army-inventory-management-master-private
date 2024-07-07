@@ -4,9 +4,9 @@
   <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
     <!-- BEGIN menu -->
     <div class="menu">
-      {% for menu in sidebar_menu %} 
+      {% for menu in sidebar_menu %}
       {% if menu.is_header %}
-      <div class="menu-header {{ menu.css_class|default:'' }}">{{ menu.text }}</div>
+      <div class="menu-header {{ menu.css_class }}">{{ menu.text }}</div>
       {% elif menu.is_divider %}
       <div class="menu-divider"></div>
       {% else %}
@@ -30,7 +30,7 @@
         </div>
         {% endif %}
       </div>
-      {% endif %} 
+      {% endif %}
       {% endfor %}
     </div>
     <!-- END menu -->

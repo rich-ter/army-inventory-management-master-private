@@ -1,11 +1,29 @@
-from django.urls import resolve, reverse
+from django.urls import resolve, reverse, Resolver404
 
-def mark_active_link(menu, current_path_name):
+def mark_active_link(menu, current_path, current_view_name, current_kwargs):
     for item in menu:
-        item['is_active'] = item.get('name', '') == current_path_name
+        # Compare URL or use the view name with kwargs
+        if 'name' in item:
+            try:
+                item_view_name = resolve(item['url']).url_name
+                if item_view_name == current_view_name:
+                    if item_view_name == 'pageStockPerWarehouse':
+                        # Check if the warehouse name parameter matches
+                        if 'warehouse_name' in current_kwargs and 'warehouse_name' in item['kwargs']:
+                            item['is_active'] = item['kwargs']['warehouse_name'] == current_kwargs['warehouse_name']
+                        else:
+                            item['is_active'] = False
+                    else:
+                        item['is_active'] = True
+                else:
+                    item['is_active'] = False
+            except Resolver404:
+                item['is_active'] = False
+        else:
+            item['is_active'] = item.get('url', '') == current_path
 
         if 'children' in item:
-            item['children'] = mark_active_link(item['children'], current_path_name)
+            item['children'] = mark_active_link(item['children'], current_path, current_view_name, current_kwargs)
 
             if any(child.get('is_active', False) for child in item['children']):
                 item['is_active'] = True
@@ -15,7 +33,7 @@ def mark_active_link(menu, current_path_name):
 def sidebar_menu(request):
     user = request.user
     user_groups = user.groups.values_list('name', flat=True)
-    
+
     sidebar_menu = [{
         'text': 'Επιλογές',
         'is_header': 1
@@ -90,18 +108,21 @@ def sidebar_menu(request):
         'icon': 'fas fa-server',
         'text': 'Αποθήκη ΚΕΠΙΚ',
         'name': 'pageStockPerWarehouse',
+        'kwargs': {'warehouse_name': 'ΚΕΠΙΚ'},
         'groups': ['ΔΙΔΕΣ', 'admin']
     }, {
         'url': reverse('DjangoHUDApp:pageStockPerWarehouse', kwargs={'warehouse_name': 'ΤΑΓΜΑ'}),
         'icon': 'fas fa-building',
         'text': 'Αποθήκη Τάγματος',
         'name': 'pageStockPerWarehouse',
+        'kwargs': {'warehouse_name': 'ΤΑΓΜΑ'},
         'groups': ['ΔΙΔΕΣ', 'admin']
     }, {
         'url': reverse('DjangoHUDApp:pageStockPerWarehouse', kwargs={'warehouse_name': 'ΔΟΡΥΦΟΡΙΚΑ'}),
         'icon': 'fas fa-signal',
         'text': 'Αποθήκη Δορυφορικών',
         'name': 'pageStockPerWarehouse',
+        'kwargs': {'warehouse_name': 'ΔΟΡΥΦΟΡΙΚΑ'},
         'groups': ['ΔΟΡΥΦΟΡΙΚΑ', 'admin']
     }, {
         'is_divider': 1
@@ -128,8 +149,10 @@ def sidebar_menu(request):
         else:
             filtered_menu.append(item)
 
+    current_full_path = request.path
     resolved_path = resolve(request.path_info)
-    current_path_name = resolved_path.url_name
-    filtered_menu = mark_active_link(filtered_menu, current_path_name)
+    current_view_name = resolved_path.url_name
+    current_kwargs = resolved_path.kwargs
+    filtered_menu = mark_active_link(filtered_menu, current_full_path, current_view_name, current_kwargs)
 
     return {'sidebar_menu': filtered_menu}

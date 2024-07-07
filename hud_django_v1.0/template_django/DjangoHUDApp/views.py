@@ -89,9 +89,9 @@ def add_product(request):
 def pageProduct(request):
     user_groups = request.user.groups.all()
     if request.user.is_superuser:
-        products_list = Product.objects.all()
+        products_list = Product.objects.annotate(total_stock=Sum('stocks__quantity'))
     else:
-        products_list = Product.objects.filter(owners__in=user_groups).distinct()
+        products_list = Product.objects.filter(owners__in=user_groups).annotate(total_stock=Sum('stocks__quantity')).distinct()
 
     product_filter = ProductFilter(request.GET, queryset=products_list)
     products_list = product_filter.qs
@@ -102,7 +102,6 @@ def pageProduct(request):
 
     context = {'products': products, 'filter': product_filter}
     return render(request, "pages/all-products.html", context)
-
 
 
 @login_required
@@ -142,24 +141,28 @@ def add_shipment(request):
         form = ShipmentForm(request.POST, request.FILES)
         formset = ShipmentItemFormSet(request.POST, prefix='shipmentitem', user=request.user)
 
-        if form.is_valid() and formset.is_valid():
-            if any(item.cleaned_data and not item.cleaned_data.get('DELETE', False) for item in formset):
-                try:
-                    with transaction.atomic():
-                        shipment = form.save(commit=False)
-                        shipment.user = request.user
-                        shipment.save()
+        if form.is_valid():
+            if formset.is_valid():
+                if any(item.cleaned_data and not item.cleaned_data.get('DELETE', False) for item in formset):
+                    try:
+                        with transaction.atomic():
+                            shipment = form.save(commit=False)
+                            shipment.user = request.user
+                            shipment.save()
 
-                        formset.instance = shipment
-                        formset.save()
+                            formset.instance = shipment
+                            formset.save()
 
-                        return redirect('DjangoHUDApp:pageOrder')
-                except ValidationError as e:
-                    form.add_error(None, e)
+                            return redirect('DjangoHUDApp:pageOrder')
+                    except ValidationError as e:
+                        form.add_error(None, e)
+                else:
+                    formset._non_form_errors = formset.error_class(["You must add at least one shipment item."])
             else:
-                formset._non_form_errors = formset.error_class(["At least one product is required in the shipment."])
+                form.add_error(None, "Please correct the errors below.")
         else:
-            form.add_error(None, "Please correct the errors below.")
+            print(form.errors)
+            print(formset.errors)
     else:
         initial_date = timezone.now().strftime('%d-%m-%Y')
         form = ShipmentForm(initial={'date': initial_date})
