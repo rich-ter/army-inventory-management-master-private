@@ -59,9 +59,9 @@ class ShipmentForm(forms.ModelForm):
         }
         labels = {
             'shipment_type': 'Τύπος Αποστολής',  # Custom title for shipment_type
-            'recipient': 'Παραλήπτης',  # Custom title for recipient
+            'recipient': 'Παραλήπτης (OUT) / Αποστολέας (IN)',  # Custom title for recipient
             'signatory': 'Υπογεγραμμένος',  # Custom title for recipient
-            'date': 'Ημερομηνία και Ώρα',  # Custom title for date
+            'date': 'Ημερομηνία',  # Custom title for date
             'order_number': 'Αριθμός Διαταγής',
             'notes': 'Σημειώσεις',  # Custom title for notes
             'attachment': 'Συνημμένο'  # Custom title for attachment
