@@ -1,6 +1,0 @@
-def layoutBoxedLayout(request):
-  context = {
-    "appBoxedLayout": 1,
-    "bodyClass": "pace-top"
-  }
-  return render(request, "pages/layout-boxed-layout.html", context)

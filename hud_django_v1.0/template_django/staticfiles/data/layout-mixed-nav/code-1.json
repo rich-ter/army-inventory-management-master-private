@@ -1,5 +1,0 @@
-def layoutMixedNav(request):
-  context = {
-    "appTopNav": 1,
-  }
-  return render(request, "pages/layout-mixed-nav.html", context)

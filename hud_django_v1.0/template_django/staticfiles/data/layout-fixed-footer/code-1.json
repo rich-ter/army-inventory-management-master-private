@@ -1,5 +1,0 @@
-def layoutFixedFooter(request):
-  context = {
-    "appFooter": 1
-  }
-  return render(request, "pages/layout-fixed-footer.html", context)
