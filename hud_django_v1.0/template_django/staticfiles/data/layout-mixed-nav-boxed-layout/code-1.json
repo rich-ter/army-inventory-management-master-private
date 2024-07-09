@@ -1,0 +1,6 @@
+def layoutMixedNavBoxedLayout(request):
+  context = {
+    "appTopNav": 1,
+    "appBoxedLayout": 1
+  }
+  return render(request, "pages/layout-mixed-nav-boxed-layout.html", context)

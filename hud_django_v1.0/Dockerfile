@@ -26,8 +26,11 @@ COPY ./template_django/ /app/
 ENV DJANGO_SETTINGS_MODULE=DjangoHUD.settings
 
 # Collect static files
-# RUN mkdir -p /app/staticfiles && chown -R www-data:www-data /app/staticfiles
-RUN python manage.py custom_collectstatic --noinput
+RUN mkdir -p /app/staticfiles && chown -R www-data:www-data /app/staticfiles
+RUN python manage.py collectstatic --noinput
+
+# Ensure the media directory exists
+RUN mkdir -p /app/product_images && chown -R www-data:www-data /app/product_images
 
 # Expose the port the app runs on
 EXPOSE 8000

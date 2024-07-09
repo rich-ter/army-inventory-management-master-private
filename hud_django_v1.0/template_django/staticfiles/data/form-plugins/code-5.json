@@ -1,0 +1,26 @@
+&lt;!-- required css & js --&gt;
+&lt;link href="{% static 'plugins/jquery-typeahead/dist/jquery.typeahead.min.css' %}" rel="stylesheet"&gt;
+&lt;script src="{% static 'plugins/jquery-typeahead/dist/jquery.typeahead.min.js' %}"&gt;&lt;/script&gt;
+
+&lt;!-- html --&gt;
+&lt;div class="typeahead__container"&gt;
+  &lt;div class="typeahead__field"&gt;
+    &lt;div class="typeahead__query input-group"&gt;
+      &lt;span class="input-group-text"&gt;&lt;i class="fa fa-search"&gt;&lt;/i&gt;&lt;/span&gt;
+      &lt;input class="form-control" name="country_v1[query]" id="typeahead" placeholder="Type 'af'" autocomplete="off"&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- script --&gt;
+&lt;script&gt;
+  $.typeahead({
+    input: '#typeahead',
+    order: "desc",
+    source: {
+      data: [
+        "Afghanistan", "Albania", ...
+      ]
+    }
+  });
+&lt;/script&gt;

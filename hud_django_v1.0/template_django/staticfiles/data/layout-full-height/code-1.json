@@ -1,0 +1,6 @@
+def layoutFullHeight(request):
+  context = {
+    "appContentFullHeight": 1,
+    "appContentClass": "p-0"
+  }
+  return render(request, "pages/layout-full-height.html", context)
