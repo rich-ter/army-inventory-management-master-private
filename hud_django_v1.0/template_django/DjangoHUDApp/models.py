@@ -2,19 +2,17 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from django.utils import timezone
 from django.conf import settings
-from django.db.models import Sum
+from django.db.models import Sum, Max, F
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.contrib import admin
-from django.db.models import F
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 import os 
-from django.db.models import Max
 
 class Recipient(models.Model):
-    commanding_unit = models.CharField(max_length=100)
-    recipient_unit = models.CharField(max_length=100, default='None Specified')
+    commanding_unit = models.CharField(max_length=100, db_index=True)  # Added index
+    recipient_unit = models.CharField(max_length=100, default='None Specified', db_index=True)  # Added index
     notes = models.CharField(max_length=450, null=True, blank=True)
 
     def __str__(self):
@@ -54,12 +52,12 @@ class Product(models.Model):
         ("ΚΑΜΙΑ ΕΠΙΛΟΓΗ", "ΚΑΜΙΑ ΕΠΙΛΟΓΗ"),       
     )
 
-    name = models.CharField(max_length=100, null=False)
-    batch_number = models.CharField(max_length=100, null=False, default='KAMIA EPILOGH', blank=True)
+    name = models.CharField(max_length=100, null=False, db_index=True)  # Added index
+    batch_number = models.CharField(max_length=100, null=False, default='KAMIA EPILOGH', blank=True, db_index=True)  # Added index
     unit_of_measurement = models.CharField(max_length=30, choices=MEASUREMENT_TYPES, default='ΚΑΜΙΑ ΕΠΙΛΟΓΗ')
     image = models.ImageField(upload_to='product_images/', validators=[validate_image], blank=True, null=True)
-    category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True, blank=True)
-    usage = models.ForeignKey(ProductUsage, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True, blank=True, db_index=True)  # Added index
+    usage = models.ForeignKey(ProductUsage, on_delete=models.SET_NULL, null=True, blank=True, db_index=True)  # Added index
     description = models.CharField(max_length=200, null=True, blank=True)
     owners = models.ManyToManyField(Group, blank=True, verbose_name='Product Owners')
 
@@ -94,13 +92,13 @@ class Shipment(models.Model):
     SHIPMENT_METHOD_CHOICES = [
         ('ΥΕΣΑ', 'ΥΕΣΑ'),
         ('ΚΡΥΠΤΟΔΙΑΥΛΟΣ', 'ΚΡΥΠΤΟΔΙΑΥΛΟΣ'),
-        ('ΠΑΡΑΛΑΒΗ ΑΠΟ ΕΞΟΥΣΙΟΔΟΤΗΜΕΝΟ ΠΡΟΣΩΠΙΚΟ', 'ΠΑΡΑΛΑΒΗ ΑΠΟ ΕΞΟΥΣΙΟΔΟΤΗΜΕΝΟ ΠΡΟΣΩΠΙΚΟ'),
+        ('ΠΑΡΑΛΑΒΗ ΑΠΟ ΕΞΟΥΣΙΟΔΟΤΗΜΕΝΟ ΠΡΟΣΩΠΙΚΟ', 'ΠΑΡΑΛΑΒΗ ΑΠΟ ΕΞΟΥΣΙΟΔΟΤΗΜΕΝΟ ΠΡΟΣΩΠΟ'),
     ]
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='shipments')
-    shipment_type = models.CharField(max_length=3, choices=SHIPMENT_TYPE_CHOICES)
-    date = models.DateTimeField(default=timezone.now)
-    recipient = models.ForeignKey(Recipient, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='shipments', db_index=True)  # Added index
+    shipment_type = models.CharField(max_length=3, choices=SHIPMENT_TYPE_CHOICES, db_index=True)  # Added index
+    date = models.DateTimeField(default=timezone.now, db_index=True)  # Added index
+    recipient = models.ForeignKey(Recipient, on_delete=models.CASCADE, db_index=True)  # Added index
     notes = models.CharField(max_length=200, null=True, blank=True)
     attachment = models.FileField(upload_to='shipment_attachments/', validators=[validate_shipment_attachment], null=True, blank=True)
     order_number = models.CharField(max_length=100, null=True, blank=True)
@@ -122,7 +120,7 @@ def delete_shipment_files(sender, instance, **kwargs):
 
 
 class Warehouse(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, db_index=True)  # Added index
     description = models.CharField(max_length=255, blank=True)
     access_groups = models.ManyToManyField(Group, related_name="access_warehouses")
 
@@ -130,9 +128,9 @@ class Warehouse(models.Model):
         return f"{self.name}"
 
 class ShipmentItem(models.Model):
-    shipment = models.ForeignKey(Shipment, on_delete=models.CASCADE, related_name='shipment_items')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, null=True)
+    shipment = models.ForeignKey(Shipment, on_delete=models.CASCADE, related_name='shipment_items', db_index=True)  # Added index
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, db_index=True)  # Added index
+    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, null=True, db_index=True)  # Added index
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
@@ -186,8 +184,8 @@ def adjust_stock(instance, created):
         stock.save()
 
 class Stock(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='stocks')
-    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, related_name='stocks')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='stocks', db_index=True)  # Added index
+    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, related_name='stocks', db_index=True)  # Added index
     quantity = models.PositiveIntegerField(default=0)
 
     class Meta:
