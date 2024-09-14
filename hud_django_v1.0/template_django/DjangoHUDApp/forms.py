@@ -90,11 +90,11 @@ class ShipmentItemForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if user:
             if user.is_superuser:
-                self.fields['product'].queryset = Product.objects.all()
+                self.fields['product'].queryset = Product.objects.all().order_by('name')
                 self.fields['warehouse'].queryset = Warehouse.objects.all()
             else:
                 user_groups = user.groups.all()
-                self.fields['product'].queryset = Product.objects.filter(owners__in=user_groups).distinct()
+                self.fields['product'].queryset = Product.objects.filter(owners__in=user_groups).distinct().order_by('name')
                 self.fields['warehouse'].queryset = Warehouse.objects.filter(access_groups__in=user_groups).distinct()
         self.fields['product'].widget.attrs.update({'class': 'form-select mb-2'})
         self.fields['warehouse'].widget.attrs.update({'class': 'form-select'})
@@ -106,11 +106,11 @@ class ShipmentItemFormSetWithUser(forms.BaseInlineFormSet):
         super().__init__(*args, **kwargs)
         for form in self.forms:
             if self.user.is_superuser:
-                form.fields['product'].queryset = Product.objects.all()
+                form.fields['product'].queryset = Product.objects.all().order_by('name')
                 form.fields['warehouse'].queryset = Warehouse.objects.all()
             else:
                 user_groups = self.user.groups.all()
-                form.fields['product'].queryset = Product.objects.filter(owners__in=user_groups).distinct()
+                form.fields['product'].queryset = Product.objects.filter(owners__in=user_groups).distinct().order_by('name')
                 form.fields['warehouse'].queryset = Warehouse.objects.filter(access_groups__in=user_groups).distinct()
 
     def clean(self):

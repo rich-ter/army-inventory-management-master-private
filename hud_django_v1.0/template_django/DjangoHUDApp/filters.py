@@ -4,6 +4,7 @@ from .models import Product, Shipment, ProductCategory, ProductUsage, Recipient,
 from django.db.models import Q
 from unidecode import unidecode
 from django import forms
+from django.db.models.functions import Lower
 
 class ProductFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(method='filter_by_all', label='Search')
@@ -12,19 +13,28 @@ class ProductFilter(django_filters.FilterSet):
         model = Product
         fields = ['name', 'category', 'usage', 'description']
 
-    def normalize_input(self, value):
-        return value.strip().lower()
-
     def filter_by_all(self, queryset, name, value):
         if not value:
             return queryset
-        normalized_value = self.normalize_input(value)
-        return queryset.filter(
-            Q(name__icontains=normalized_value) |
-            Q(category__name__icontains=normalized_value) |
-            Q(usage__name__icontains=normalized_value) |
-            Q(description__icontains=normalized_value)
-        )
+
+        # Normalize the input by stripping whitespace
+        value_normalized = value.strip()
+
+        # Split the search term into individual words
+        search_terms = value_normalized.split()
+
+        # Build a Q object to perform partial matches for each word in search_terms
+        query = Q()
+        for term in search_terms:
+            query |= (
+                Q(name__icontains=term) |
+                Q(category__name__icontains=term) |
+                Q(usage__name__icontains=term) |
+                Q(description__icontains=term)
+            )
+
+        # Apply the Q object to the queryset
+        return queryset.filter(query)
 
 class ShipmentFilter(django_filters.FilterSet):
     order_number = django_filters.CharFilter(field_name='id', lookup_expr='exact', label='Order Number')
